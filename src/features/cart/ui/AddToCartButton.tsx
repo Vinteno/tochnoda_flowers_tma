@@ -14,6 +14,7 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
 
   const cartItem = items.find(item => item.product_id === product.id)
   const inCart = !!cartItem
+  const isOutOfStock = product.stock_quantity <= 0
 
   const handleAddToCart = () => {
     addToCart(product.id, 1, {
@@ -50,8 +51,9 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
       <Button
         className={className}
         onClick={handleAddToCart}
+        disabled={isOutOfStock}
       >
-        Добавить в корзину
+        {isOutOfStock ? 'Нет в наличии' : 'Добавить в корзину'}
       </Button>
     )
   }
@@ -81,6 +83,7 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
         size="icon"
         className="size-9 rounded-full bg-background text-foreground"
         onClick={handleIncrement}
+        disabled={isOutOfStock || cartItem.quantity >= product.stock_quantity}
       >
         <LuPlus className="size-5" strokeWidth={1.5} />
       </Button>
