@@ -291,8 +291,8 @@ export function CheckoutPage() {
       </section>
 
       <footer className="
-        sticky bottom-0 flex w-full flex-col gap-2 rounded-t-3xl bg-background
-        p-2
+        fixed right-0 bottom-0 left-0 flex w-full flex-col gap-2 rounded-t-3xl
+        bg-background px-2 pt-2 safe-area-bottom
       "
       >
         <Button

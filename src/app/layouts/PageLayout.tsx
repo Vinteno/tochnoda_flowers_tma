@@ -3,7 +3,7 @@ import { Header } from '@widgets/header'
 
 export function PageLayout() {
   return (
-    <main className="flex min-h-dvh flex-col safe-area-top">
+    <main className="flex min-h-dvh flex-col safe-area-top safe-area-bottom">
       <Header />
       <div className="flex flex-1 flex-col">
         <Outlet />

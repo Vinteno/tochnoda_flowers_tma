@@ -31,7 +31,11 @@ export function CartPage() {
         <CartList />
       </section>
 
-      <footer className="sticky bottom-0 w-full rounded-t-3xl bg-background p-2">
+      <footer className="
+        fixed right-0 bottom-0 left-0 w-full rounded-t-3xl bg-background px-2
+        pt-2 safe-area-bottom
+      "
+      >
         <Button
           className="
             flex h-11 w-full flex-col gap-0 rounded-full text-base/tight

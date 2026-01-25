@@ -29,7 +29,7 @@ export function HomePage() {
         </div>
       </div>
 
-      <section className="mt-3 flex flex-col">
+      <section className="relative mt-3 flex flex-col">
         <div className="sticky top-0 rounded-b-xl bg-background p-2">
           <ButtonGroup className="w-full [--radius:9999rem]">
             <ButtonGroup className="w-full">

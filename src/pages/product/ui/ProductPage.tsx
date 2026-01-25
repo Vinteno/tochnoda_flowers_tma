@@ -246,7 +246,8 @@ export function ProductPage({ slug }: ProductPageProps) {
       </section>
 
       <footer className="
-        fixed right-0 bottom-0 left-0 w-full rounded-t-3xl bg-background p-2
+        fixed right-0 bottom-0 left-0 w-full rounded-t-3xl bg-background px-2
+        pt-2 safe-area-bottom
       "
       >
         <AddToCartButton

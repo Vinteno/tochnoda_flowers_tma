@@ -258,3 +258,9 @@
 @utility safe-area-top {
   padding-top: calc(var(--tg-viewport-safe-area-inset-top, 0px) + var(--tg-viewport-content-safe-area-inset-top, 0px));
 }
+
+@utility safe-area-bottom {
+  padding-bottom: calc(
+    0.5rem + var(--tg-viewport-safe-area-inset-bottom, 0px) + var(--tg-viewport-content-safe-area-inset-bottom, 0px)
+  );
+}
