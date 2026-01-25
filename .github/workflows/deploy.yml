@@ -21,37 +21,25 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      # ========================================
-      # 1. Checkout кода
-      # ========================================
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      # ========================================
-      # 2. Установка Bun
-      # ========================================
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
-      # ========================================
-      # 3. Установка зависимостей
-      # ========================================
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # ========================================
-      # 4. Сборка проекта
-      # ========================================
       - name: Build project
         run: bun run build
         env:
           VITE_API_URL: https://admin.evergreen-flowers.ru/api/v1
 
-      # ========================================
-      # 5. Настройка SSH
-      # ========================================
+      - name: Install rsync
+        run: sudo apt-get update && sudo apt-get install -y rsync
+
       - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
@@ -59,19 +47,21 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      # ========================================
-      # 6. Деплой через rsync
-      # ========================================
+      # Исправление прав ПЕРЕД rsync
+      - name: Fix permissions before deploy
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            'sudo chown -R ${{ secrets.SSH_USER }}:www-data /var/www/evergreen-flowers'
+
       - name: Deploy to server
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no" \
             ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.DEPLOY_PATH }}/
 
-      # ========================================
-      # 7. Установка прав на сервере
-      # ========================================
-      - name: Set permissions
+      # Возврат прав для Nginx ПОСЛЕ rsync
+      - name: Set permissions after deploy
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash -s' << 'ENDSSH'
@@ -80,9 +70,6 @@ jobs:
           echo "Frontend deploy completed!"
           ENDSSH
 
-      # ========================================
-      # 8. Очистка SSH ключа
-      # ========================================
       - name: Cleanup SSH key
         if: always()
         run: rm -f ~/.ssh/deploy_key
