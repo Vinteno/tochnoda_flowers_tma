@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 import { PageLayout } from '@/app/layouts/PageLayout'
 
 function RootLayout() {
-  const { authenticate } = useAuthStore()
+  const { ensureValidToken } = useAuthStore()
   const { fetchFromServer } = useCartStore()
   const isInitialized = useRef(false)
 
@@ -18,11 +18,13 @@ function RootLayout() {
     isInitialized.current = true
 
     // Authenticate on app load
-    authenticate().then(() => {
-      // After auth, fetch cart from server
-      fetchFromServer()
+    ensureValidToken().then((didResetCart) => {
+      if (!didResetCart) {
+        // After auth, fetch cart from server
+        fetchFromServer()
+      }
     })
-  }, [authenticate, fetchFromServer])
+  }, [ensureValidToken, fetchFromServer])
 
   return (
     <>

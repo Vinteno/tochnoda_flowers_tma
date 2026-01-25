@@ -19,6 +19,7 @@ interface CartState {
   remove: (productId: number) => void
   clear: () => void
   fetchFromServer: () => Promise<void>
+  resetAfterAuth: () => Promise<void>
 }
 
 const calculateTotals = (items: CartItem[]) => {
@@ -223,6 +224,11 @@ export const useCartStore = create<CartState>()(
           const message = error instanceof Error ? error.message : 'Failed to fetch cart'
           set({ isLoading: false, error: message })
         }
+      },
+
+      resetAfterAuth: async () => {
+        get().clear()
+        await get().fetchFromServer()
       },
     }),
     {

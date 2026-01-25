@@ -11,11 +11,21 @@ interface ApiError {
   errors?: Record<string, string[]>
 }
 
+type UnauthorizedHandler = () => void | Promise<void>
+
 class ApiClient {
   private token: string | null = null
+  private unauthorizedHandlers = new Set<UnauthorizedHandler>()
 
   setToken(token: string | null) {
     this.token = token
+  }
+
+  onUnauthorized(handler: UnauthorizedHandler) {
+    this.unauthorizedHandlers.add(handler)
+    return () => {
+      this.unauthorizedHandlers.delete(handler)
+    }
   }
 
   getToken(): string | null {
@@ -69,6 +79,14 @@ class ApiClient {
       // If unauthorized, clear token
       if (response.status === 401) {
         this.token = null
+        this.unauthorizedHandlers.forEach((handler) => {
+          try {
+            void handler()
+          }
+          catch {
+            // Ignore handler errors to not mask the original request error
+          }
+        })
       }
 
       throw new ApiClientError(error.message, response.status, error.errors)
