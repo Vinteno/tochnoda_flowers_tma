@@ -1,6 +1,5 @@
 import { useAuthStore } from '@features/auth'
 import { useCartStore } from '@features/cart'
-import { NavigationHistoryTracker } from '@shared/lib'
 import { createRootRoute } from '@tanstack/react-router'
 import { useEffect, useRef } from 'react'
 import { PageLayout } from '@/app/layouts/PageLayout'
@@ -28,7 +27,6 @@ function RootLayout() {
 
   return (
     <>
-      <NavigationHistoryTracker />
       <PageLayout />
       {/* <TanStackRouterDevtools /> */}
     </>

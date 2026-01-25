@@ -1,14 +1,15 @@
 import { useNavigate } from '@tanstack/react-router'
-import { BACK_BUTTON_SKIP_ROUTES, useBackButton } from '@/shared'
+import { useCallback } from 'react'
+import { useBackButton } from '@/shared'
 
 export function UserAgreementPage() {
   const navigate = useNavigate()
 
-  useBackButton({
-    navigate,
-    skipRoutes: BACK_BUTTON_SKIP_ROUTES,
-    fallbackTo: '/cart',
-  })
+  const handleBack = useCallback(() => {
+    navigate({ to: '/cart' })
+  }, [navigate])
+
+  useBackButton(handleBack)
 
   return (
     <article className="prose prose-sm mt-4 px-2 pb-2">

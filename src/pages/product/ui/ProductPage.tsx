@@ -3,12 +3,11 @@ import { useProduct } from '@entities/product'
 import { AddToCartButton } from '@features/cart'
 import { cn, formatPrice, useBackButton } from '@shared/lib'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { LuArrowLeft, LuFlower, LuMoveHorizontal, LuMoveVertical } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { BACK_BUTTON_SKIP_ROUTES } from '@/shared'
 import { ProductPageSkeleton } from './ProductPageSkeleton'
 
 interface ProductPageProps {
@@ -21,11 +20,11 @@ export function ProductPage({ slug }: ProductPageProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
 
-  useBackButton({
-    navigate,
-    skipRoutes: BACK_BUTTON_SKIP_ROUTES,
-    fallbackTo: '/',
-  })
+  const handleBack = useCallback(() => {
+    navigate({ to: '/' })
+  }, [navigate])
+
+  useBackButton(handleBack)
 
   useEffect(() => {
     if (!carouselApi) {

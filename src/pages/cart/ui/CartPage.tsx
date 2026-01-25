@@ -3,8 +3,8 @@ import { formatPrice, useBackButton } from '@shared/lib'
 import { useNavigate } from '@tanstack/react-router'
 import { CartList } from '@widgets/cart-list'
 import { ArrowRight } from 'lucide-react'
+import { useCallback } from 'react'
 import { Button } from '@/components/ui/button'
-import { BACK_BUTTON_SKIP_ROUTES } from '@/shared'
 import { EmptyCartPage } from './EmptyCartPage'
 
 export function CartPage() {
@@ -13,11 +13,11 @@ export function CartPage() {
 
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
 
-  useBackButton({
-    navigate,
-    skipRoutes: BACK_BUTTON_SKIP_ROUTES,
-    fallbackTo: '/',
-  })
+  const handleBack = useCallback(() => {
+    navigate({ to: '/' })
+  }, [navigate])
+
+  useBackButton(handleBack)
 
   if (items.length === 0) {
     return (
