@@ -1,5 +1,6 @@
 import type { DeliverySlot } from '@entities/delivery'
 import type { CreateOrderData } from '@entities/order'
+import { useDeliveryFees } from '@entities/delivery'
 import { useCreateOrder } from '@entities/order'
 import { useAuthStore } from '@features/auth'
 import { useCartStore } from '@features/cart'
@@ -20,7 +21,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 export function CheckoutPage() {
   const navigate = useNavigate()
-  const { total, clear: clearCart } = useCartStore()
+  const { subtotal, clear: clearCart } = useCartStore()
   const { user } = useAuthStore()
   const createOrder = useCreateOrder({
     onSuccess: (data) => {
@@ -47,6 +48,7 @@ export function CheckoutPage() {
   const [deliveryType, setDeliveryType] = useState<'pickup' | 'delivery'>('pickup')
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectedSlot, setSelectedSlot] = useState<DeliverySlot | null>(null)
+  const { data: deliveryFees } = useDeliveryFees(subtotal, deliveryType === 'delivery')
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -74,6 +76,11 @@ export function CheckoutPage() {
   const handleInputChange = (field: string, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
+
+  const deliveryFee = deliveryType === 'delivery'
+    ? (deliveryFees?.resolved_fee ?? 0)
+    : 0
+  const totalWithDelivery = subtotal + deliveryFee
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -308,7 +315,7 @@ export function CheckoutPage() {
               : <LuWallet />}
             Оплатить
           </div>
-          <p>{formatPrice(total)}</p>
+          <p>{formatPrice(totalWithDelivery)}</p>
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">

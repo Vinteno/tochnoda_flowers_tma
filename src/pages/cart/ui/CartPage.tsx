@@ -1,3 +1,4 @@
+import { useDeliveryFees } from '@entities/delivery'
 import { useCartStore } from '@features/cart'
 import { formatPrice, useBackButton } from '@shared/lib'
 import { useNavigate } from '@tanstack/react-router'
@@ -9,9 +10,12 @@ import { EmptyCartPage } from './EmptyCartPage'
 
 export function CartPage() {
   const navigate = useNavigate()
-  const { items, total } = useCartStore()
+  const { items, subtotal } = useCartStore()
+  const { data: deliveryFees } = useDeliveryFees(subtotal)
 
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
+  const deliveryFee = deliveryFees?.resolved_fee ?? 0
+  const totalWithDelivery = subtotal + deliveryFee
 
   const handleBack = useCallback(() => {
     navigate({ to: '/' })
@@ -51,7 +55,7 @@ export function CartPage() {
             {' '}
             шт,
             {' '}
-            {formatPrice(total)}
+            {formatPrice(totalWithDelivery)}
           </p>
         </Button>
       </footer>

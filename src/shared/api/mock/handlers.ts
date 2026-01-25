@@ -91,6 +91,25 @@ const routes: Array<{ pattern: RegExp, handler: MockHandler }> = [
     pattern: /^\/delivery\/pickup-points$/,
     handler: () => ({ data: testPickupPoints }),
   },
+  {
+    pattern: /^\/delivery\/fees$/,
+    handler: (params) => {
+      const rules = [
+        { min_order_amount: 0, delivery_fee: 300 },
+        { min_order_amount: 2000, delivery_fee: 0 },
+      ]
+      const subtotal = Number(params.get('subtotal')) || 0
+      const resolvedRule = rules
+        .filter(rule => subtotal >= rule.min_order_amount)
+        .sort((a, b) => b.min_order_amount - a.min_order_amount)[0]
+      return {
+        data: {
+          rules,
+          resolved_fee: resolvedRule?.delivery_fee ?? rules[0]?.delivery_fee ?? 0,
+        },
+      }
+    },
+  },
 
   // Promotions
   {

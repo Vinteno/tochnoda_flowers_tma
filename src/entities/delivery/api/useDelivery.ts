@@ -1,5 +1,10 @@
 import type { ApiResponse } from '@shared/api'
-import type { DeliveryDatesResponse, DeliverySlotsResponse, PickupPoint } from '../model/types'
+import type {
+  DeliveryDatesResponse,
+  DeliveryFeesData,
+  DeliverySlotsResponse,
+  PickupPoint,
+} from '../model/types'
 import { apiClient } from '@shared/api'
 import { useQuery } from '@tanstack/react-query'
 
@@ -34,5 +39,18 @@ export function usePickupPoints() {
       const response = await apiClient.get<ApiResponse<PickupPoint[]>>('/delivery/pickup-points')
       return response.data
     },
+  })
+}
+
+export function useDeliveryFees(subtotal: number, enabled: boolean = true) {
+  return useQuery({
+    queryKey: ['delivery', 'fees', subtotal],
+    queryFn: async () => {
+      const response = await apiClient.get<ApiResponse<DeliveryFeesData>>(
+        `/delivery/fees?subtotal=${subtotal}`,
+      )
+      return response.data
+    },
+    enabled: enabled && subtotal > 0,
   })
 }

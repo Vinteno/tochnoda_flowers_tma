@@ -1,10 +1,12 @@
 // API hooks
-export { useDeliveryDates, usePickupPoints, useTimeSlots } from './api/useDelivery'
+export { useDeliveryDates, useDeliveryFees, usePickupPoints, useTimeSlots } from './api/useDelivery'
 
 // Types
 export type {
   DeliveryDate,
   DeliveryDatesResponse,
+  DeliveryFeeRule,
+  DeliveryFeesData,
   DeliverySlot,
   DeliverySlotsResponse,
   PickupPoint,

@@ -37,6 +37,16 @@ export interface PickupPoint {
   is_active: boolean
 }
 
+export interface DeliveryFeeRule {
+  min_order_amount: number
+  delivery_fee: number
+}
+
+export interface DeliveryFeesData {
+  rules: DeliveryFeeRule[]
+  resolved_fee: number
+}
+
 // Legacy support
 export interface TimeSlot {
   label: string
