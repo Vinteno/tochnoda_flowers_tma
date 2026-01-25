@@ -114,7 +114,7 @@ export function CheckoutPage() {
 
   return (
     <>
-      <section className="mt-4 flex-1 px-2 pb-2">
+      <section className="mt-4 flex-1 px-2 pb-28">
         <Tabs value={deliveryType} onValueChange={v => setDeliveryType(v as 'pickup' | 'delivery')}>
           <TabsList className="w-full rounded-xl bg-card">
             <TabsTrigger

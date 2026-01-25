@@ -128,7 +128,7 @@ export function ProductPage({ slug }: ProductPageProps) {
         </div>
       )}
 
-      <section className="mt-5 flex flex-col px-2 pb-20">
+      <section className="mt-5 flex flex-col px-2 pb-28">
         <div className="flex flex-col">
           <h2 className="text-xl font-bold">{product.name}</h2>
           <div className="mt-1.5 flex items-center justify-between">

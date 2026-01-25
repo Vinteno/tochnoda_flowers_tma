@@ -27,7 +27,7 @@ export function CartPage() {
 
   return (
     <>
-      <section className="mt-4 flex-1 px-2 pb-2">
+      <section className="mt-4 flex-1 px-2 pb-28">
         <CartList />
       </section>
 
