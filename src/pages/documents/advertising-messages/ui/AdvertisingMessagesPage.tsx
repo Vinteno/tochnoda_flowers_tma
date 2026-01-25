@@ -1,21 +1,14 @@
-import { useNavigate, useRouter } from '@tanstack/react-router'
-import { useCallback } from 'react'
-import { useBackButton } from '@/shared'
+import { useNavigate } from '@tanstack/react-router'
+import { BACK_BUTTON_SKIP_ROUTES, useBackButton } from '@/shared'
 
 export function AdvertisingMessagesPage() {
-  const router = useRouter()
   const navigate = useNavigate()
 
-  const handleBack = useCallback(() => {
-    if (router.history.canGoBack()) {
-      router.history.back()
-    }
-    else {
-      navigate({ to: '/' })
-    }
-  }, [navigate, router])
-
-  useBackButton(handleBack)
+  useBackButton({
+    navigate,
+    skipRoutes: BACK_BUTTON_SKIP_ROUTES,
+    fallbackTo: '/',
+  })
 
   return (
     <article className="prose prose-sm mt-4 px-2 pb-2">
