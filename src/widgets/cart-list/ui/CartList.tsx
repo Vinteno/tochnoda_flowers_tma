@@ -22,7 +22,7 @@ export function CartList() {
 
   return (
     <ul className="flex flex-col gap-2">
-      {items.map(item => (
+      {(items ?? []).map(item => (
         <li
           key={item.product_id}
           className="flex min-w-0 overflow-hidden rounded-xl bg-card"

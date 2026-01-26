@@ -10,7 +10,7 @@ export function Header() {
   const { items: cartItems } = useCartStore()
   const { user } = useAuthStore()
 
-  const cartItemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+  const cartItemsCount = (cartItems ?? []).reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <header className="flex items-center justify-between p-2">

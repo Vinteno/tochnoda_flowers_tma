@@ -23,7 +23,8 @@ interface CartState {
 }
 
 const calculateTotals = (items: CartItem[]) => {
-  const subtotal = items.reduce((sum, item) => sum + item.best_price * item.quantity, 0)
+  const safeItems = Array.isArray(items) ? items : []
+  const subtotal = safeItems.reduce((sum, item) => sum + item.best_price * item.quantity, 0)
   return {
     subtotal,
     discount: 0,
@@ -78,11 +79,12 @@ const debouncedSync = debounce(async (_get: () => CartState, set: (state: Partia
 
     // Fetch updated cart from server to get accurate totals
     const serverCart = await apiClient.get<CartTotals>('/cart')
+    const serverItems = Array.isArray(serverCart.items) ? serverCart.items : []
     set({
-      items: serverCart.items,
-      subtotal: serverCart.subtotal,
-      discount: serverCart.discount,
-      total: serverCart.total,
+      items: serverItems,
+      subtotal: serverCart.subtotal ?? 0,
+      discount: serverCart.discount ?? 0,
+      total: serverCart.total ?? 0,
       isSyncing: false,
     })
   }
@@ -211,12 +213,13 @@ export const useCartStore = create<CartState>()(
 
         try {
           const serverCart = await apiClient.get<CartTotals>('/cart')
+          const serverItems = Array.isArray(serverCart.items) ? serverCart.items : []
 
           set({
-            items: serverCart.items,
-            subtotal: serverCart.subtotal,
-            discount: serverCart.discount,
-            total: serverCart.total,
+            items: serverItems,
+            subtotal: serverCart.subtotal ?? 0,
+            discount: serverCart.discount ?? 0,
+            total: serverCart.total ?? 0,
             isLoading: false,
           })
         }
@@ -239,6 +242,17 @@ export const useCartStore = create<CartState>()(
         discount: state.discount,
         total: state.total,
       }),
+      onRehydrateStorage: () => (state) => {
+        // Ensure items is always an array after rehydration
+        if (state) {
+          if (!Array.isArray(state.items)) {
+            state.items = []
+            state.subtotal = 0
+            state.discount = 0
+            state.total = 0
+          }
+        }
+      },
     },
   ),
 )

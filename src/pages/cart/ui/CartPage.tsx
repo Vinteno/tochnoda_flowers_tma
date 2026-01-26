@@ -11,7 +11,7 @@ export function CartPage() {
   const navigate = useNavigate()
   const { items, total } = useCartStore()
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
+  const totalQuantity = (items ?? []).reduce((sum, item) => sum + item.quantity, 0)
 
   const handleBack = useCallback(() => {
     navigate({ to: '/' })
@@ -19,7 +19,7 @@ export function CartPage() {
 
   useBackButton(handleBack)
 
-  if (items.length === 0) {
+  if (!items || items.length === 0) {
     return (
       <EmptyCartPage />
     )
