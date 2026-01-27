@@ -259,22 +259,6 @@
   padding-top: calc(var(--tg-viewport-safe-area-inset-top, 0px) + var(--tg-viewport-content-safe-area-inset-top, 0px));
 }
 
-@utility safe-top {
-  top: calc(var(--tg-viewport-safe-area-inset-top, 0px) + var(--tg-viewport-content-safe-area-inset-top, 0px));
-}
-
-@utility safe-top-extend {
-  &::before {
-    content: '';
-    position: absolute;
-    top: calc(-1 * (var(--tg-viewport-safe-area-inset-top, 0px) + var(--tg-viewport-content-safe-area-inset-top, 0px)));
-    left: 0;
-    right: 0;
-    height: calc(var(--tg-viewport-safe-area-inset-top, 0px) + var(--tg-viewport-content-safe-area-inset-top, 0px));
-    background: inherit;
-  }
-}
-
 @utility safe-area-bottom {
   padding-bottom: calc(
     0.5rem + var(--tg-viewport-safe-area-inset-bottom, 0px) + var(--tg-viewport-content-safe-area-inset-bottom, 0px)

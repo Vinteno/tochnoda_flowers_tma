@@ -44,10 +44,7 @@ export function HomePage() {
       )}
 
       <section className="relative mt-3 flex flex-col">
-        <div className="
-          safe-top-extend sticky safe-top rounded-b-xl bg-background p-2
-        "
-        >
+        <div className="sticky top-0 rounded-b-xl bg-background p-2">
           <ButtonGroup className="w-full [--radius:9999rem]">
             <ButtonGroup className="w-full">
               <InputGroup className="h-11 w-full border-0 bg-card">
