@@ -2,7 +2,7 @@ import type { ApiResponse } from '@shared/api'
 import type { CreateOrderData, CreateOrderResponse, Order } from '../model/types'
 import { apiClient, queryClient } from '@shared/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { openLink } from '@tma.js/sdk-react'
+import { openLink, retrieveLaunchParams } from '@tma.js/sdk-react'
 
 const PENDING_ORDER_KEY = 'pending_order'
 
@@ -10,6 +10,15 @@ export interface PendingOrder {
   uuid: string
   confirmationUrl: string
   createdAt: number
+}
+
+function isIOSPlatform(): boolean {
+  try {
+    return retrieveLaunchParams().tgWebAppPlatform === 'ios'
+  }
+  catch {
+    return false
+  }
 }
 
 /**
@@ -28,7 +37,7 @@ export function savePendingOrder(uuid: string, confirmationUrl: string): void {
  * Opens payment page for pending order
  */
 export function openPaymentPage(url: string): void {
-  openLink(url, { tryInstantView: true })
+  openLink(url, { tryInstantView: !isIOSPlatform() })
 }
 
 /**
@@ -85,9 +94,11 @@ export function useCreateOrder(options?: {
         options?.onPaymentRedirect?.(data)
 
         // Open payment page - user will return to app after payment
-        openLink(confirmationUrl, {
-          tryInstantView: true,
-        })
+        if (!isIOSPlatform()) {
+          openLink(confirmationUrl, {
+            tryInstantView: true,
+          })
+        }
 
         // DO NOT call onSuccess here - payment hasn't completed yet
         return

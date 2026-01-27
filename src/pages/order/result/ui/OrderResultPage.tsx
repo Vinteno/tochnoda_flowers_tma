@@ -1,6 +1,6 @@
 import { clearPendingOrder, getPendingOrder, openPaymentPage, useOrder } from '@entities/order'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { ArrowRightLeft, CreditCard } from 'lucide-react'
+import { CreditCard } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { LuArrowLeft, LuCheck, LuLoaderCircle, LuX } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
@@ -144,26 +144,14 @@ export function OrderResultPage() {
         </Button>
       )}
 
-      {isPending && (
-        <div className="flex flex-col items-center">
-          {paymentUrl && (
-            <Button
-              variant="link"
-              onClick={() => openPaymentPage(paymentUrl)}
-            >
-              <CreditCard strokeWidth={1.5} />
-              Открыть страницу оплаты
-            </Button>
-          )}
-          <Button
-            className="text-muted-foreground"
-            variant="link"
-            onClick={() => refetch()}
-          >
-            <ArrowRightLeft strokeWidth={1.5} />
-            Перепроверить статус
-          </Button>
-        </div>
+      {isPending && paymentUrl && (
+        <Button
+          onClick={() => openPaymentPage(paymentUrl)}
+          className="mt-2.5"
+        >
+          <CreditCard strokeWidth={1.5} />
+          Открыть страницу оплаты
+        </Button>
       )}
     </div>
   )
