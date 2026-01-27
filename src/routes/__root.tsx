@@ -1,12 +1,14 @@
+import { getPendingOrder } from '@entities/order'
 import { useAuthStore } from '@features/auth'
 import { useCartStore } from '@features/cart'
-import { createRootRoute } from '@tanstack/react-router'
+import { createRootRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef } from 'react'
 import { PageLayout } from '@/app/layouts/PageLayout'
 
 function RootLayout() {
   const { ensureValidToken } = useAuthStore()
   const { fetchFromServer } = useCartStore()
+  const navigate = useNavigate()
   const isInitialized = useRef(false)
 
   useEffect(() => {
@@ -16,6 +18,18 @@ function RootLayout() {
     }
     isInitialized.current = true
 
+    // Check for pending order and redirect if exists
+    const pendingOrder = getPendingOrder()
+    if (pendingOrder) {
+      navigate({
+        to: '/order/result',
+        search: {
+          status: 'pending',
+          orderId: pendingOrder.uuid,
+        },
+      })
+    }
+
     // Authenticate on app load
     ensureValidToken().then((didResetCart) => {
       if (!didResetCart) {
@@ -23,7 +37,7 @@ function RootLayout() {
         fetchFromServer()
       }
     })
-  }, [ensureValidToken, fetchFromServer])
+  }, [ensureValidToken, fetchFromServer, navigate])
 
   return (
     <>

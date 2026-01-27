@@ -56,11 +56,25 @@ export function CheckoutPage() {
   })
   const createOrder = useCreateOrder({
     onSuccess: (data) => {
+      // Called only when no payment required (free order)
       clearCart()
       navigate({
         to: '/order/result',
         search: {
           status: 'success',
+          orderId: data.uuid || '',
+        },
+      })
+    },
+    onPaymentRedirect: (data) => {
+      // Payment required - order created, user redirected to payment
+      // Clear cart since order is already created on server
+      clearCart()
+      // Navigate to pending page - user will return here after payment
+      navigate({
+        to: '/order/result',
+        search: {
+          status: 'pending',
           orderId: data.uuid || '',
         },
       })
