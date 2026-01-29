@@ -2,7 +2,6 @@ import { useAuthStore } from '@features/auth'
 import { useCartStore } from '@features/cart'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { LuShoppingCart } from 'react-icons/lu'
-import EvergreenLogoImage from '@/assets/images/logos/evergreen.png'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 export function Header() {
@@ -14,8 +13,8 @@ export function Header() {
 
   return (
     <header className="flex items-center justify-between p-2">
-      <Link to="/">
-        <img src={EvergreenLogoImage} className="h-12" alt="Evergreen" />
+      <Link to="/" className="font-garamond text-2xl">
+        Floris
       </Link>
       <nav className="flex items-center gap-4">
         <button className="relative" onClick={() => navigate({ to: '/cart' })}>

@@ -273,4 +273,4 @@ export async function handleMockRequest<T>(
   }
 }
 
-export const USE_MOCK_DATA = import.meta.env.DEV && !import.meta.env.VITE_API_URL
+export const USE_MOCK_DATA = true

@@ -113,6 +113,7 @@
   --font-sans: Montserrat, ui-sans-serif, sans-serif, system-ui;
   --font-serif: Inter, ui-sans-serif, sans-serif, system-ui;
   --font-mono: monospace;
+  --font-garamond: 'Garamond', serif;
   --radius: 0.5rem;
   --shadow-x: -50px;
   --shadow-y: -50px;
@@ -222,6 +223,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
+  --font-garamond: var(--font-garamond);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
