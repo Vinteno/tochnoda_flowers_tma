@@ -67,4 +67,5 @@ export interface CreateOrderData {
   recipient_phone?: string
   pickup_point_id?: number
   notes?: string
+  promo_code?: string
 }

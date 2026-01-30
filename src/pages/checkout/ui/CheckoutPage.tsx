@@ -1,16 +1,19 @@
 import type { DeliverySlot } from '@entities/delivery'
 import type { CheckoutFormData, CreateOrderData } from '@entities/order'
+import type { Promotion } from '@entities/promotion'
 import { useDeliveryFees } from '@entities/delivery'
 import { checkoutSchema, useCreateOrder } from '@entities/order'
+import { useValidatePromo } from '@entities/promotion'
 import { useAuthStore } from '@features/auth'
 import { useCartStore } from '@features/cart'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { formatPrice, useBackButton } from '@shared/lib'
+import { cn, formatPrice, useBackButton } from '@shared/lib'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { useDebounce } from '@uidotdev/usehooks'
 import { DeliveryDateSelector } from '@widgets/delivery-date-selector'
 import { DeliverySlotList } from '@widgets/delivery-slot-list'
 import { PickupPointSelector } from '@widgets/pickup-point-selector'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { LuLoaderCircle, LuWallet } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
@@ -41,6 +44,7 @@ export function CheckoutPage() {
       customer_phone: user?.phone || '',
       pickup_point_id: 0,
       notes: '',
+      promo_code: '',
       shipping_address: {
         street: '',
         city: '',
@@ -111,6 +115,22 @@ export function CheckoutPage() {
     name: 'is_recipient_different',
   })
   const { data: deliveryFees } = useDeliveryFees(subtotal, deliveryType === 'delivery')
+  const promoCode = useWatch({
+    control: form.control,
+    name: 'promo_code',
+  }) ?? ''
+  const debouncedPromoCode = useDebounce(promoCode.trim(), 500)
+  const validatePromo = useValidatePromo()
+  const validatePromoRef = useRef(validatePromo.mutateAsync)
+  useEffect(() => {
+    validatePromoRef.current = validatePromo.mutateAsync
+  })
+  const [promoState, setPromoState] = useState<{
+    discount: number
+    info: string | null
+    promotion: Promotion | null
+  }>({ discount: 0, info: null, promotion: null })
+  const lastValidatedKey = useRef<string | null>(null)
 
   // Reset slot when date changes
   const handleDateChange = useCallback((date: string) => {
@@ -151,6 +171,7 @@ export function CheckoutPage() {
     ? (deliveryFees?.resolved_fee ?? 0)
     : 0
   const totalWithDelivery = subtotal + deliveryFee
+  const totalWithDiscount = Math.max(0, totalWithDelivery - promoState.discount)
 
   const selectedSlot = useMemo(() => {
     if (!deliverySlotId || !deliverySlotType) {
@@ -167,12 +188,95 @@ export function CheckoutPage() {
     return trimmed || undefined
   }
 
+  useEffect(() => {
+    const code = debouncedPromoCode
+    const validationKey = `${code}:${totalWithDelivery}`
+
+    if (!code) {
+      if (lastValidatedKey.current !== null) {
+        lastValidatedKey.current = null
+        queueMicrotask(() => {
+          setPromoState({ discount: 0, info: null, promotion: null })
+          form.clearErrors('promo_code')
+        })
+      }
+      return
+    }
+
+    if (lastValidatedKey.current === validationKey) {
+      return
+    }
+
+    let cancelled = false
+
+    async function validate() {
+      try {
+        const response = await validatePromoRef.current({
+          code,
+          orderTotal: totalWithDelivery,
+        })
+        if (cancelled) {
+          return
+        }
+
+        lastValidatedKey.current = validationKey
+
+        if (response.valid && response.promotion) {
+          const promo = response.promotion
+          let discount = 0
+          switch (promo.discount_type) {
+            case 'fixed':
+              discount = promo.discount_value
+              break
+            case 'percentage':
+              discount = Math.round(totalWithDelivery * promo.discount_value / 100)
+              break
+            case 'final_price':
+              discount = totalWithDelivery - promo.discount_value
+              break
+          }
+          discount = Math.max(0, Math.min(discount, totalWithDelivery))
+          setPromoState({
+            discount,
+            promotion: promo,
+            info: 'Промокод действителен',
+          })
+          form.clearErrors('promo_code')
+        }
+        else {
+          setPromoState({ discount: 0, info: null, promotion: null })
+          form.setError('promo_code', {
+            type: 'manual',
+            message: 'Промокод недействителен',
+          })
+        }
+      }
+      catch {
+        if (cancelled) {
+          return
+        }
+        setPromoState({ discount: 0, info: null, promotion: null })
+        form.setError('promo_code', {
+          type: 'manual',
+          message: 'Не удалось проверить промокод',
+        })
+      }
+    }
+
+    void validate()
+
+    return () => {
+      cancelled = true
+    }
+  }, [debouncedPromoCode, totalWithDelivery, form])
+
   const handleSubmit = async (values: CheckoutFormData) => {
     const orderData: CreateOrderData = {
       customer_name: values.customer_name.trim(),
       customer_phone: cleanOptional(values.customer_phone),
       delivery_type: values.delivery_type,
       notes: cleanOptional(values.notes),
+      promo_code: promoState.promotion ? cleanOptional(values.promo_code) : undefined,
     }
 
     if (values.delivery_type === 'delivery') {
@@ -204,7 +308,7 @@ export function CheckoutPage() {
 
   return (
     <>
-      <section className="mt-4 flex-1 px-2 pb-28">
+      <section className="mt-4 flex-1 px-2 pb-38">
         <Form {...form}>
           <form id="checkout-form" className="flex flex-col gap-4" onSubmit={form.handleSubmit(handleSubmit)}>
             <Tabs value={deliveryType} onValueChange={v => handleDeliveryTypeChange(v as 'pickup' | 'delivery')}>
@@ -451,6 +555,33 @@ export function CheckoutPage() {
                 )}
               </div>
             </div>
+
+            <div className="rounded-xl bg-card px-2 pt-1.5 pb-2">
+              <div className="mt-2 flex flex-col gap-4">
+                <FormField
+                  control={form.control}
+                  name="promo_code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Промокод</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="PROMO"
+                          className={cn('text-sm font-normal', { 'border-primary text-primary': !!promoState.promotion })}
+                          {...field}
+                        />
+                      </FormControl>
+                      {promoState.info && (
+                        <p className="mb-0.5 text-xs text-primary">
+                          {promoState.info}
+                        </p>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
           </form>
         </Form>
       </section>
@@ -464,7 +595,12 @@ export function CheckoutPage() {
           className="h-11 w-full justify-between rounded-full text-base"
           type="submit"
           form="checkout-form"
-          disabled={createOrder.isPending || !form.formState.isValid}
+          disabled={
+            createOrder.isPending
+            || !form.formState.isValid
+            || promoCode.trim() !== debouncedPromoCode
+            || validatePromo.isPending
+          }
         >
           <div className="flex items-center gap-2">
             {createOrder.isPending
@@ -474,7 +610,7 @@ export function CheckoutPage() {
               : <LuWallet />}
             Оплатить
           </div>
-          <p>{formatPrice(totalWithDelivery)}</p>
+          <p>{formatPrice(totalWithDiscount)}</p>
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">

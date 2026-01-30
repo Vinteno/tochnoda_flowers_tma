@@ -5,6 +5,7 @@ export const checkoutSchema = z.object({
   customer_name: z.string().min(1, 'Введите имя').max(255),
   customer_phone: z.string().max(50).optional(),
   notes: z.string().max(1000).optional(),
+  promo_code: z.string().max(50).optional(),
 
   // Pickup fields
   pickup_point_id: z.number().optional(),

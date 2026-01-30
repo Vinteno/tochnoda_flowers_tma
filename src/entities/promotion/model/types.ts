@@ -15,6 +15,4 @@ export interface Promotion {
 export interface PromoValidationResponse {
   valid: boolean
   promotion?: Promotion
-  discount_amount?: number
-  message?: string
 }
