@@ -1,8 +1,8 @@
 import type { CarouselApi } from '@/components/ui/carousel'
-import { useProduct } from '@entities/product'
+import { ProductCard, useProduct } from '@entities/product'
 import { AddToCartButton } from '@features/cart'
 import { cn, formatPrice, useBackButton } from '@shared/lib'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 import { LuArrowLeft, LuFlower, LuMoveHorizontal, LuMoveVertical } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
@@ -203,35 +203,16 @@ export function ProductPage({ slug }: ProductPageProps) {
           )}
 
           {product.related_products && product.related_products.length > 0 && (
-            <div className="mt-4 flex flex-col gap-2">
+            <div className="mt-4 flex flex-col gap-2.5">
               <h4 className="font-medium">С этим покупают</h4>
-              <ScrollArea>
+              <ScrollArea className="rounded-xl">
                 <ul className="flex gap-2">
                   {product.related_products.map(related => (
-                    <li key={related.id}>
-                      <Link
-                        className="
-                          min-w-32 cursor-pointer overflow-hidden rounded-xl
-                          border border-border
-                        "
-                        to="/product/$slug"
-                        params={{ slug: related.slug }}
-                      >
-                        <div className="h-24 w-full bg-secondary">
-                          {related.thumbnail && (
-                            <img
-                              src={related.thumbnail}
-                              alt={related.name}
-                              className="h-24 w-full object-cover"
-                            />
-                          )}
-                        </div>
-                        <div className="p-2">
-                          <p className="line-clamp-1 text-sm">{related.name}</p>
-                          <p className="font-bold">{formatPrice(related.best_price)}</p>
-                        </div>
-                      </Link>
-                    </li>
+                    <ProductCard
+                      key={related.id}
+                      product={related}
+                      className="w-1/2 shrink-0"
+                    />
                   ))}
                 </ul>
                 <ScrollBar

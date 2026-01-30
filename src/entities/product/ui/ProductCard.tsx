@@ -1,13 +1,15 @@
 import type { ComponentProps } from 'react'
-import type { Product } from '../model/types'
+import type { Product, RelatedProduct } from '../model/types'
 import { cn, formatPrice } from '@shared/lib'
 import { Link } from '@tanstack/react-router'
 
 interface ProductCardProps extends ComponentProps<'li'> {
-  product: Product
+  product: Product | RelatedProduct
 }
 
 export function ProductCard({ product, ...props }: ProductCardProps) {
+  const hasDiscount = product.best_price < product.price || ('has_discount' in product && product.has_discount)
+
   return (
     <li {...props}>
       <Link
@@ -34,10 +36,10 @@ export function ProductCard({ product, ...props }: ProductCardProps) {
           <h3 className="line-clamp-2 text-sm/tight">{product.name}</h3>
           <div className="mt-1.5 flex grow items-end">
             <div className="flex gap-2">
-              <p className={cn('font-bold', { 'text-primary': product.has_discount })}>
+              <p className={cn('font-bold', { 'text-primary': hasDiscount })}>
                 {formatPrice(product.best_price)}
               </p>
-              {product.has_discount && (
+              {hasDiscount && (
                 <p className="
                   self-end pb-1 text-xs text-muted-foreground line-through
                 "
