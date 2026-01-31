@@ -310,7 +310,7 @@ export function CheckoutPage() {
     <>
       <section className="mt-4 flex-1 px-2 pb-38">
         <Form {...form}>
-          <form id="checkout-form" className="flex flex-col gap-4" onSubmit={form.handleSubmit(handleSubmit)}>
+          <form id="checkout-form" className="flex flex-col gap-2" onSubmit={form.handleSubmit(handleSubmit)}>
             <Tabs value={deliveryType} onValueChange={v => handleDeliveryTypeChange(v as 'pickup' | 'delivery')}>
               <TabsList className="w-full rounded-xl bg-card">
                 <TabsTrigger
