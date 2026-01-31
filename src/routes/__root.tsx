@@ -25,19 +25,12 @@ function RootLayout() {
       const startParam = launchParams.tgWebAppStartParam || ''
 
       if (startParam) {
-        // Parse startapp parameter from tgWebAppStartParam
-        // Format: "startapp=product-slug" or URL-encoded format
-        const params = new URLSearchParams(startParam)
-        const productSlug = params.get('startapp')
-
-        if (productSlug) {
-          navigate({
-            to: '/product/$slug',
-            params: { slug: productSlug },
-            replace: true,
-          })
-          return
-        }
+        navigate({
+          to: '/product/$slug',
+          params: { slug: startParam },
+          replace: true,
+        })
+        return
       }
     }
     catch (error) {
