@@ -27,7 +27,7 @@ export function CartList() {
           key={item.product_id}
           className="flex min-w-0 overflow-hidden rounded-xl bg-card"
         >
-          <Link className="aspect-square size-26 shrink-0 bg-secondary" to="/product/$slug" params={{ slug: item.slug }}>
+          <Link className="aspect-square size-28 shrink-0 bg-secondary" to="/product/$slug" params={{ slug: item.slug }}>
             {item.thumbnail
               ? (
                   <img
