@@ -43,8 +43,8 @@ export function HomePage() {
         </div>
       )}
 
-      <section className="relative mt-3 flex flex-col">
-        <div className="rounded-b-xl bg-background p-2">
+      <section className="relative mt-4 flex flex-col">
+        <div className="rounded-b-xl bg-background px-2 pb-2">
           <ButtonGroup className="w-full [--radius:9999rem]">
             <ButtonGroup className="w-full">
               <InputGroup className="h-11 w-full border-0 bg-card">
