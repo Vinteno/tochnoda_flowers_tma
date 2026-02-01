@@ -62,6 +62,7 @@ const useFormField = () => {
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
     ...fieldState,
+    isSubmitted: formState.isSubmitted,
   }
 }
 
@@ -91,12 +92,13 @@ function FormLabel({
   className,
   ...props
 }: React.ComponentProps<typeof LabelPrimitive.Root>) {
-  const { error, formItemId } = useFormField()
+  const { error, formItemId, isTouched, isDirty, isSubmitted } = useFormField()
+  const showError = !!error && (isTouched || isDirty || isSubmitted)
 
   return (
     <Label
       data-slot="form-label"
-      data-error={!!error}
+      data-error={showError}
       className={cn("data-[error=true]:text-destructive", className)}
       htmlFor={formItemId}
       {...props}
@@ -105,18 +107,27 @@ function FormLabel({
 }
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+  const {
+    error,
+    formItemId,
+    formDescriptionId,
+    formMessageId,
+    isTouched,
+    isDirty,
+    isSubmitted,
+  } = useFormField()
+  const showError = !!error && (isTouched || isDirty || isSubmitted)
 
   return (
     <Slot
       data-slot="form-control"
       id={formItemId}
       aria-describedby={
-        !error
+        !showError
           ? `${formDescriptionId}`
           : `${formDescriptionId} ${formMessageId}`
       }
-      aria-invalid={!!error}
+      aria-invalid={showError}
       {...props}
     />
   )
@@ -136,8 +147,9 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
-  const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message ?? "") : props.children
+  const { error, formMessageId, isTouched, isDirty, isSubmitted } = useFormField()
+  const showError = !!error && (isTouched || isDirty || isSubmitted)
+  const body = showError ? String(error?.message ?? "") : props.children
 
   if (!body) {
     return null
