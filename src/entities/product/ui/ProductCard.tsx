@@ -8,18 +8,18 @@ interface ProductCardProps extends ComponentProps<'li'> {
 }
 
 export function ProductCard({ product, ...props }: ProductCardProps) {
-  const hasDiscount = product.best_price < product.price || ('has_discount' in product && product.has_discount)
+  const hasDiscount = product.best_price < product.price
 
   return (
     <li {...props}>
       <Link
         className="
-          flex h-full cursor-pointer flex-col overflow-hidden rounded-xl bg-card
+          flex h-full cursor-pointer flex-col overflow-hidden rounded-md bg-card
         "
         to="/product/$slug"
         params={{ slug: product.slug }}
       >
-        <div className="h-42 w-full overflow-hidden bg-secondary">
+        <div className="h-42 w-full overflow-hidden">
           {product.thumbnail
             ? (
                 <img
@@ -36,12 +36,12 @@ export function ProductCard({ product, ...props }: ProductCardProps) {
           <h3 className="line-clamp-2 text-sm/tight">{product.name}</h3>
           <div className="mt-1.5 flex grow items-end">
             <div className="flex gap-2">
-              <p className={cn('font-bold', { 'text-primary': hasDiscount })}>
+              <p className={cn('text-lg font-bold', { 'text-primary': hasDiscount })}>
                 {formatPrice(product.best_price)}
               </p>
               {hasDiscount && (
                 <p className="
-                  self-end pb-1 text-xs text-muted-foreground line-through
+                  self-end pb-1 text-sm text-muted-foreground line-through
                 "
                 >
                   {formatPrice(product.price)}

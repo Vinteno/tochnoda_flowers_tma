@@ -1,5 +1,6 @@
 import type { Product } from '@entities/product'
-import { LuMinus, LuPlus } from 'react-icons/lu'
+import { Link } from '@tanstack/react-router'
+import { LuMinus, LuPlus, LuShoppingCart } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/shared'
 import { useCartStore } from '../model/store'
@@ -59,34 +60,48 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
   }
 
   return (
-    <div className={cn(`
-      flex h-11 w-full items-center justify-between rounded-full bg-secondary
-      p-1
-    `, className)}
-    >
-      <Button
-        size="icon"
-        className="size-9 rounded-full bg-background text-foreground"
-        onClick={handleDecrement}
-      >
-        <LuMinus className="size-5" strokeWidth={1.5} />
-      </Button>
-      <div className="flex flex-col items-center justify-center text-center">
-        <p className="leading-tight font-medium">
-          {cartItem?.quantity}
-          {' '}
-          шт.
-        </p>
-        <p className="text-xs/tight">в корзине</p>
+    <div className={cn(`grid h-10 grid-cols-2 gap-2`, className)}>
+      <div className="h-full">
+        <Button className="size-full!" asChild>
+          <Link to="/cart">
+            <LuShoppingCart />
+            В корзину
+          </Link>
+        </Button>
       </div>
-      <Button
-        size="icon"
-        className="size-9 rounded-full bg-background text-foreground"
-        onClick={handleIncrement}
-        disabled={isOutOfStock || cartItem.quantity >= product.stock_quantity}
+      <div className="
+        flex size-full items-center justify-between rounded-md bg-secondary p-1
+        text-secondary-foreground
+      "
       >
-        <LuPlus className="size-5" strokeWidth={1.5} />
-      </Button>
+        <Button
+          size="icon"
+          className="size-8"
+          variant="ghost"
+          onClick={handleDecrement}
+        >
+          <LuMinus className="size-5" strokeWidth={1.5} />
+        </Button>
+        <div className="
+          flex flex-col items-center justify-center text-center text-sm
+        "
+        >
+          <p className="leading-tight font-medium">
+            {cartItem?.quantity}
+            {' '}
+            шт.
+          </p>
+        </div>
+        <Button
+          size="icon"
+          className="size-8"
+          variant="ghost"
+          onClick={handleIncrement}
+          disabled={isOutOfStock || cartItem.quantity >= product.stock_quantity}
+        >
+          <LuPlus className="size-5" strokeWidth={1.5} />
+        </Button>
+      </div>
     </div>
   )
 }

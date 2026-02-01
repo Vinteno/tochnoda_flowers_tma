@@ -14,16 +14,16 @@ export function CategoryFilterSkeleton() {
     >
       <ul className="flex gap-2">
         <li>
-          <Skeleton className="h-7 w-24 rounded-full" />
+          <Skeleton className="h-7 w-24 rounded-md" />
         </li>
         <li>
-          <Skeleton className="h-7 w-24 rounded-full" />
+          <Skeleton className="h-7 w-24 rounded-md" />
         </li>
         <li>
-          <Skeleton className="h-7 w-24 rounded-full" />
+          <Skeleton className="h-7 w-24 rounded-md" />
         </li>
         <li>
-          <Skeleton className="h-7 w-24 rounded-full" />
+          <Skeleton className="h-7 w-24 rounded-md" />
         </li>
       </ul>
       <ScrollBar orientation="horizontal" className="-mb-2.5 h-1.5" />

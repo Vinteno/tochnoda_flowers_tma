@@ -45,9 +45,9 @@ export function HomePage() {
 
       <section className="relative mt-4 flex flex-col">
         <div className="rounded-b-xl bg-background px-2 pb-2">
-          <ButtonGroup className="w-full [--radius:9999rem]">
+          <ButtonGroup className="w-full">
             <ButtonGroup className="w-full">
-              <InputGroup className="h-11 w-full border-0 bg-card">
+              <InputGroup className="h-10 w-full border-secondary!">
                 <InputGroupInput
                   className="text-sm"
                   placeholder="Поиск по каталогу..."

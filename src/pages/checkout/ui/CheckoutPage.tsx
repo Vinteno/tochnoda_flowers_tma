@@ -312,11 +312,11 @@ export function CheckoutPage() {
         <Form {...form}>
           <form id="checkout-form" className="flex flex-col gap-2" onSubmit={form.handleSubmit(handleSubmit)}>
             <Tabs value={deliveryType} onValueChange={v => handleDeliveryTypeChange(v as 'pickup' | 'delivery')}>
-              <TabsList className="w-full rounded-xl bg-card">
+              <TabsList className="w-full bg-card">
                 <TabsTrigger
                   value="pickup"
                   className="
-                    transition-all
+                    border-none transition-all
                     data-[state=active]:bg-primary
                     data-[state=active]:text-primary-foreground
                   "
@@ -326,7 +326,7 @@ export function CheckoutPage() {
                 <TabsTrigger
                   value="delivery"
                   className="
-                    transition-all
+                    border-none transition-all
                     data-[state=active]:bg-primary
                     data-[state=active]:text-primary-foreground
                   "
@@ -336,7 +336,7 @@ export function CheckoutPage() {
               </TabsList>
             </Tabs>
 
-            <div className="rounded-xl bg-card px-2 pt-1.5 pb-2">
+            <div className="rounded-md bg-card px-2 pt-1.5 pb-2">
               <div className="mt-2 flex flex-col gap-4">
                 <FormField
                   control={form.control}
@@ -347,7 +347,7 @@ export function CheckoutPage() {
                       <FormControl>
                         <Input
                           placeholder="Иванов Иван"
-                          className="text-sm font-normal"
+                          className="border-border text-sm font-normal"
                           {...field}
                         />
                       </FormControl>
@@ -366,6 +366,7 @@ export function CheckoutPage() {
                         <PhoneInput
                           className="
                             w-full font-normal
+                            [&>input]:border-border [&>input]:bg-transparent
                             [&>input]:text-sm!
                           "
                           placeholder="+7 999 123 45 67"
@@ -403,7 +404,7 @@ export function CheckoutPage() {
                           <FormControl>
                             <Textarea
                               placeholder="Добавить записку с содержанием..."
-                              className="text-sm font-normal"
+                              className="border-border text-sm font-normal"
                               {...field}
                             />
                           </FormControl>
@@ -425,7 +426,7 @@ export function CheckoutPage() {
                           <FormControl>
                             <Input
                               placeholder="ул. Галеева, д. 6"
-                              className="text-sm font-normal"
+                              className="border-border text-sm font-normal"
                               {...field}
                             />
                           </FormControl>
@@ -468,7 +469,7 @@ export function CheckoutPage() {
                               <FormControl>
                                 <Input
                                   placeholder="Иванов Иван"
-                                  className="text-sm font-normal"
+                                  className="border-border text-sm font-normal"
                                   {...field}
                                 />
                               </FormControl>
@@ -486,7 +487,7 @@ export function CheckoutPage() {
                                 <PhoneInput
                                   className="
                                     w-full font-normal
-                                    [&>input]:text-sm!
+                                    [&>input]:border-border [&>input]:text-sm!
                                   "
                                   placeholder="+7 999 123 45 67"
                                   value={field.value ?? ''}
@@ -543,7 +544,7 @@ export function CheckoutPage() {
                           <FormControl>
                             <Textarea
                               placeholder="Добавить записку с содержанием..."
-                              className="text-sm font-normal"
+                              className="border-border text-sm font-normal"
                               {...field}
                             />
                           </FormControl>
@@ -556,7 +557,7 @@ export function CheckoutPage() {
               </div>
             </div>
 
-            <div className="rounded-xl bg-card px-2 pt-1.5 pb-2">
+            <div className="rounded-md bg-card px-2 pt-1.5 pb-2">
               <div className="mt-2 flex flex-col gap-4">
                 <FormField
                   control={form.control}
@@ -567,7 +568,7 @@ export function CheckoutPage() {
                       <FormControl>
                         <Input
                           placeholder="PROMO"
-                          className={cn('text-sm font-normal', { 'border-primary text-primary': !!promoState.promotion })}
+                          className={cn('border-border text-sm font-normal', { 'border-primary text-primary': !!promoState.promotion })}
                           {...field}
                         />
                       </FormControl>
@@ -587,12 +588,12 @@ export function CheckoutPage() {
       </section>
 
       <footer className="
-        fixed right-0 bottom-0 left-0 flex w-full flex-col gap-2 rounded-t-3xl
+        fixed right-0 bottom-0 left-0 flex w-full flex-col gap-2 rounded-t-lg
         bg-background px-2 pt-2 safe-area-bottom
       "
       >
         <Button
-          className="h-11 w-full justify-between rounded-full text-base"
+          className="h-10 w-full justify-between text-base"
           type="submit"
           form="checkout-form"
           disabled={

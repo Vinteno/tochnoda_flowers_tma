@@ -23,67 +23,77 @@ export function CartList() {
   return (
     <ul className="flex flex-col gap-2">
       {(items ?? []).map(item => (
-        <li
-          key={item.product_id}
-          className="flex min-w-0 overflow-hidden rounded-xl bg-card"
-        >
-          <Link className="aspect-square size-28 shrink-0 bg-secondary" to="/product/$slug" params={{ slug: item.slug }}>
-            {item.thumbnail
-              ? (
-                  <img
-                    src={item.thumbnail}
-                    alt={item.name}
-                    className="size-full object-cover"
-                  />
-                )
-              : (
-                  <div className="size-full bg-secondary" />
-                )}
-          </Link>
-          <div className="flex grow gap-2 px-3 py-2">
-            <Link
-              to="/product/$slug"
-              params={{ slug: item.slug }}
-              className="
-                flex min-w-0 flex-1 flex-col justify-between gap-1 bg-card
-              "
-            >
-              <div className="flex flex-col gap-1">
-                <p className="line-clamp-2 leading-tight">{item.name}</p>
-                {item.price !== item.best_price && (
-                  <p className="text-sm text-muted-foreground line-through">
-                    {formatPrice(item.price)}
-                  </p>
-                )}
-              </div>
-              <p className="text-lg font-bold">{formatPrice(item.best_price * item.quantity)}</p>
-            </Link>
-            <div className="flex flex-col items-center justify-between">
-              <Button
-                variant="secondary"
-                className="size-7 rounded-full bg-transparent"
-                size="icon"
-                onClick={() => handleIncrement(item.product_id, item.quantity)}
-              >
-                <LuPlus className="size-5" strokeWidth={1.5} />
-              </Button>
-              <p className="text-sm font-medium">{item.quantity}</p>
-              <Button
-                variant="secondary"
-                className="size-7 rounded-full bg-transparent"
-                size="icon"
-                onClick={() => handleDecrement(item.product_id, item.quantity)}
-              >
-                {item.quantity <= 1
-                  ? (
-                      <LuTrash2 className="size-4" strokeWidth={1.5} />
-                    )
-                  : (
-                      <LuMinus className="size-5" strokeWidth={1.5} />
-                    )}
-              </Button>
+        <li key={item.product_id}>
+          <Link
+            className="flex min-w-0 rounded-md bg-card"
+            to="/product/$slug"
+            params={{ slug: item.slug }}
+          >
+            <div className="aspect-square size-28 shrink-0">
+              {item.thumbnail
+                ? (
+                    <img
+                      src={item.thumbnail}
+                      alt={item.name}
+                      className="size-full rounded-l-md object-cover"
+                    />
+                  )
+                : (
+                    <div className="size-full rounded-l-md" />
+                  )}
             </div>
-          </div>
+            <div className="flex grow gap-2 py-2 pr-2 pl-3">
+              <div className="
+                flex min-w-0 flex-1 flex-col justify-between gap-1
+              "
+              >
+                <div className="flex min-w-0 flex-col gap-1">
+                  <p className="line-clamp-2 text-sm/tight">{item.name}</p>
+                  {item.best_price < item.price && (
+                    <p className="text-xs text-muted-foreground line-through">
+                      {formatPrice(item.price)}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-lg font-bold">{formatPrice(item.best_price * item.quantity)}</p>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant="ghost"
+                      className="size-7 h-auto! p-0! text-primary"
+                      size="icon"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        handleDecrement(item.product_id, item.quantity)
+                      }}
+                    >
+                      {item.quantity <= 1
+                        ? (
+                            <LuTrash2 className="size-4" strokeWidth={1.5} />
+                          )
+                        : (
+                            <LuMinus className="size-5" strokeWidth={1.5} />
+                          )}
+                    </Button>
+                    <p className="text-sm font-medium">{item.quantity}</p>
+                    <Button
+                      variant="ghost"
+                      className="size-7 h-auto! p-0! text-primary"
+                      size="icon"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        handleIncrement(item.product_id, item.quantity)
+                      }}
+                    >
+                      <LuPlus className="size-5" strokeWidth={1.5} />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
         </li>
       ))}
     </ul>

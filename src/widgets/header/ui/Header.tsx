@@ -13,7 +13,7 @@ export function Header() {
 
   return (
     <header className="flex items-center justify-between p-2">
-      <Link to="/" className="font-garamond text-2xl">
+      <Link to="/" className="font-serif text-2xl">
         Floris
       </Link>
       <nav className="flex items-center gap-4">
@@ -22,7 +22,7 @@ export function Header() {
           {cartItemsCount > 0 && (
             <span className="
               absolute -top-1 -right-1 flex size-4 items-center justify-center
-              rounded-full bg-primary text-xs font-light text-primary-foreground
+              rounded-full bg-primary text-xs text-primary-foreground
             "
             >
               {cartItemsCount}

@@ -75,107 +75,156 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/open-sans/OpenSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/open-sans/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/open-sans/OpenSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/open-sans/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/open-sans/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/open-sans/OpenSans-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #f7f7f7;
-  --foreground: #292e2a;
+  --background: #ffffff;
+  --foreground: #111111;
   --card: #ffffff;
-  --card-foreground: #292e2a;
+  --card-foreground: #111111;
   --popover: #ffffff;
-  --popover-foreground: #292e2a;
-  --primary: #378152;
-  --primary-foreground: #ffffff;
-  --secondary: #dbf0e3;
-  --secondary-foreground: #292e2a;
-  --muted: #f1f4f1;
-  --muted-foreground: #6c7a70;
-  --accent: #dbf0e3;
-  --accent-foreground: #292e2a;
-  --destructive: #dc2828;
-  --destructive-foreground: #fafafa;
-  --border: #d5ddd5;
-  --input: #f1f4f1;
-  --ring: #378152;
-  --chart-1: #378152;
-  --chart-2: #c7d1c7;
-  --chart-3: #5eba80;
-  --chart-4: #6c7a70;
-  --chart-5: #292e2a;
-  --sidebar: #378152;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #ffffff;
-  --sidebar-primary-foreground: #378152;
-  --sidebar-accent: #2e6b44;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #4db372;
-  --sidebar-ring: #ffffff;
-  --font-sans: Montserrat, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Inter, ui-sans-serif, sans-serif, system-ui;
-  --font-mono: monospace;
-  --font-garamond: 'Garamond', serif;
+  --popover-foreground: #111111;
+  --primary: #c9b58a;
+  --primary-foreground: #14271f;
+  --secondary: #ece7dc;
+  --secondary-foreground: #111111;
+  --muted: #f3f1ea;
+  --muted-foreground: #5d5d5d;
+  --accent: #d8cfbd;
+  --accent-foreground: #111111;
+  --destructive: #b94c48;
+  --destructive-foreground: #ffffff;
+  --border: #e9e4d8;
+  --input: #f3f1ea;
+  --ring: #c9b58a;
+  --chart-1: #c9b58a;
+  --chart-2: #2f5a46;
+  --chart-3: #6a6b55;
+  --chart-4: #ece7dc;
+  --chart-5: #b94c48;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #c9b58a;
+  --sidebar-primary-foreground: #14271f;
+  --sidebar-accent: #f3f1ea;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #e9e4d8;
+  --sidebar-ring: #c9b58a;
+  --font-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces', ui-serif, Georgia, 'Times New Roman', Times, serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   --radius: 0.5rem;
   --shadow-x: -50px;
   --shadow-y: -50px;
   --shadow-blur: 0px;
   --shadow-spread: -50px;
   --shadow-opacity: 0;
-  --shadow-color: hsl(140, 6%, 17%);
-  --shadow-2xs: -50px -50px 0px -50px hsl(140 6% 17% / 0);
-  --shadow-xs: -50px -50px 0px -50px hsl(140 6% 17% / 0);
-  --shadow-sm: -50px -50px 0px -50px hsl(140 6% 17% / 0), -50px 1px 2px -51px hsl(140 6% 17% / 0);
-  --shadow: -50px -50px 0px -50px hsl(140 6% 17% / 0), -50px 1px 2px -51px hsl(140 6% 17% / 0);
-  --shadow-md: -50px -50px 0px -50px hsl(140 6% 17% / 0), -50px 2px 4px -51px hsl(140 6% 17% / 0);
-  --shadow-lg: -50px -50px 0px -50px hsl(140 6% 17% / 0), -50px 4px 6px -51px hsl(140 6% 17% / 0);
-  --shadow-xl: -50px -50px 0px -50px hsl(140 6% 17% / 0), -50px 8px 10px -51px hsl(140 6% 17% / 0);
-  --shadow-2xl: -50px -50px 0px -50px hsl(140 6% 17% / 0);
-  --tracking-normal: 0rem;
+  --shadow-color: #14271f;
+  --shadow-2xs: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0);
+  --shadow-xs: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0);
+  --shadow-sm: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0), -50px 1px 2px -51px hsl(156 29.4118% 10% / 0);
+  --shadow: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0), -50px 1px 2px -51px hsl(156 29.4118% 10% / 0);
+  --shadow-md: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0), -50px 2px 4px -51px hsl(156 29.4118% 10% / 0);
+  --shadow-lg: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0), -50px 4px 6px -51px hsl(156 29.4118% 10% / 0);
+  --shadow-xl: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0), -50px 8px 10px -51px hsl(156 29.4118% 10% / 0);
+  --shadow-2xl: -50px -50px 0px -50px hsl(156 29.4118% 10% / 0);
+  --tracking-normal: -0.005em;
   --spacing: 0.25rem;
 }
 
 .dark {
-  --background: #1d201e;
-  --foreground: #e3e8e3;
-  --card: #292e2a;
-  --card-foreground: #e3e8e3;
-  --popover: #292e2a;
-  --popover-foreground: #e3e8e3;
-  --primary: #378152;
-  --primary-foreground: #ffffff;
-  --secondary: #3c443e;
-  --secondary-foreground: #e3e8e3;
-  --muted: #303632;
-  --muted-foreground: #939f97;
-  --accent: #2e6b44;
-  --accent-foreground: #ffffff;
-  --destructive: #c62f2f;
-  --destructive-foreground: #fafafa;
-  --border: #48514b;
-  --input: #303632;
-  --ring: #378152;
-  --chart-1: #378152;
-  --chart-2: #3c443e;
-  --chart-3: #4db372;
-  --chart-4: #939f97;
-  --chart-5: #e3e8e3;
-  --sidebar: #378152;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #ffffff;
-  --sidebar-primary-foreground: #378152;
-  --sidebar-accent: #2e6b44;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #4db372;
-  --sidebar-ring: #ffffff;
-  --font-sans: Montserrat, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Inter, ui-sans-serif, sans-serif, system-ui;
-  --font-mono: monospace;
+  --background: #163026;
+  --foreground: #f3efe6;
+  --card: #14271f;
+  --card-foreground: #f3efe6;
+  --popover: #14271f;
+  --popover-foreground: #f3efe6;
+  --primary: #c9b58a;
+  --primary-foreground: #10231c;
+  --secondary: #e6dfd1;
+  --secondary-foreground: #10231c;
+  --muted: #11221b;
+  --muted-foreground: #9aa08e;
+  --accent: #161d18;
+  --accent-foreground: #f3efe6;
+  --destructive: #b94c48;
+  --destructive-foreground: #ffffff;
+  --border: #f3efe6;
+  --input: #11221b;
+  --ring: #c9b58a;
+  --chart-1: #c9b58a;
+  --chart-2: #2f5a46;
+  --chart-3: #6a6b55;
+  --chart-4: #e6dfd1;
+  --chart-5: #b94c48;
+  --sidebar: #10231c;
+  --sidebar-foreground: #f3efe6;
+  --sidebar-primary: #c9b58a;
+  --sidebar-primary-foreground: #10231c;
+  --sidebar-accent: #11221b;
+  --sidebar-accent-foreground: #f3efe6;
+  --sidebar-border: #f3efe6;
+  --sidebar-ring: #c9b58a;
+  --font-sans: 'Open Sans', ui-serif, serif;
+  --font-serif: 'Fraunces', ui-serif, Georgia, 'Times New Roman', Times, serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   --radius: 0.5rem;
   --shadow-x: -50px;
   --shadow-y: -50px;
   --shadow-blur: 0px;
   --shadow-spread: -50px;
   --shadow-opacity: 0;
-  --shadow-color: hsl(0, 0%, 0%);
+  --shadow-color: #000000;
   --shadow-2xs: -50px -50px 0px -50px hsl(0 0% 0% / 0);
   --shadow-xs: -50px -50px 0px -50px hsl(0 0% 0% / 0);
   --shadow-sm: -50px -50px 0px -50px hsl(0 0% 0% / 0), -50px 1px 2px -51px hsl(0 0% 0% / 0);
@@ -223,7 +272,6 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
-  --font-garamond: var(--font-garamond);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -245,6 +293,10 @@
   --tracking-wide: calc(var(--tracking-normal) + 0.025em);
   --tracking-wider: calc(var(--tracking-normal) + 0.05em);
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+}
+
+body {
+  letter-spacing: var(--tracking-normal);
 }
 
 @layer base {

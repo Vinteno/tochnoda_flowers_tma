@@ -32,14 +32,12 @@ export function CartPage() {
       </section>
 
       <footer className="
-        fixed right-0 bottom-0 left-0 w-full rounded-t-3xl bg-background px-2
+        fixed right-0 bottom-0 left-0 w-full rounded-t-lg bg-background px-2
         pt-2 safe-area-bottom
       "
       >
         <Button
-          className="
-            flex h-11 w-full flex-col gap-0 rounded-full text-base/tight
-          "
+          className="flex h-10 w-full flex-col gap-0 text-sm/tight"
           onClick={() => navigate({ to: '/checkout' })}
         >
           <div className="flex items-center gap-1.5">

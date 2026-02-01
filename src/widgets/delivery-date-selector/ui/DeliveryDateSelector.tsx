@@ -50,7 +50,8 @@ export function DeliveryDateSelector({
             id="delivery-date"
             variant="outline"
             className="
-              w-full justify-between border-input bg-transparent font-normal
+              w-full justify-between border border-border! bg-transparent
+              font-normal
             "
           >
             {formatDateForDisplay(selectedDate)}

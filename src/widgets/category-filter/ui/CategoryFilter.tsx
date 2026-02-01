@@ -36,8 +36,8 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
         {categories.map((cat: Category) => (
           <li key={cat.id}>
             <Button
-              variant={selectedCategory === cat.slug ? 'default' : 'secondary'}
-              className="h-7 rounded-full font-normal"
+              variant={selectedCategory === cat.slug ? 'default' : 'outline'}
+              className="h-7 border-border! font-normal"
               onClick={() => onCategoryChange(cat.slug === selectedCategory ? undefined : cat.slug)}
             >
               {cat.name}
@@ -45,7 +45,7 @@ export function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryF
           </li>
         ))}
       </ul>
-      <ScrollBar orientation="horizontal" className="-mb-2.5 h-1.5" />
+      <ScrollBar orientation="horizontal" className="-mb-2 h-1" />
     </ScrollArea>
   )
 }

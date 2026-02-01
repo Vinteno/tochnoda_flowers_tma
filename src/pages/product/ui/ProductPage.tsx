@@ -66,7 +66,7 @@ export function ProductPage({ slug }: ProductPageProps) {
   return (
     <>
       <div className="mt-4 px-2">
-        <div className="relative overflow-hidden rounded-xl">
+        <div className="relative overflow-hidden rounded-md">
           <Carousel setApi={setCarouselApi} opts={{ loop: true }}>
             <CarouselContent className="ml-0">
               {images.map((image, index) => (
@@ -94,13 +94,13 @@ export function ProductPage({ slug }: ProductPageProps) {
 
       {images.length > 1 && (
         <div className="mt-2 px-2">
-          <ScrollArea className="rounded-xl">
+          <ScrollArea className="rounded-md">
             <ul className="flex gap-1">
               {images.map((image, index) => (
                 <li key={image.id}>
                   <button
                     className={cn(`
-                      size-20 cursor-pointer overflow-hidden rounded-xl
+                      size-20 cursor-pointer overflow-hidden rounded-md
                       transition-opacity
                     `, { 'opacity-50': index !== selectedImageIndex })}
                     onClick={() => carouselApi?.scrollTo(index)}
@@ -136,7 +136,7 @@ export function ProductPage({ slug }: ProductPageProps) {
               <p className={cn('text-2xl font-medium', { 'text-primary': product.has_discount })}>
                 {formatPrice(product.best_price)}
               </p>
-              {product.has_discount && (
+              {product.best_price < product.price && (
                 <p className="
                   self-end pb-0.5 text-muted-foreground line-through
                 "
@@ -205,7 +205,7 @@ export function ProductPage({ slug }: ProductPageProps) {
           {product.related_products && product.related_products.length > 0 && (
             <div className="mt-4 flex flex-col gap-2.5">
               <h4 className="font-medium">С этим покупают</h4>
-              <ScrollArea className="rounded-xl">
+              <ScrollArea className="rounded-md">
                 <ul className="flex gap-2">
                   {product.related_products.map(related => (
                     <ProductCard
@@ -226,13 +226,13 @@ export function ProductPage({ slug }: ProductPageProps) {
       </section>
 
       <footer className="
-        fixed right-0 bottom-0 left-0 w-full rounded-t-3xl bg-background px-2
+        fixed right-0 bottom-0 left-0 w-full rounded-t-lg bg-background px-2
         pt-2 safe-area-bottom
       "
       >
         <AddToCartButton
           product={product}
-          className="h-11 w-full rounded-full text-base"
+          className="h-10 w-full text-base"
         />
       </footer>
     </>
