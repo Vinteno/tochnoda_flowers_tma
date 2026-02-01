@@ -12,7 +12,11 @@ export function AdvertisingMessagesPage() {
   useBackButton(handleBack)
 
   return (
-    <article className="prose prose-sm mt-4 px-2 pb-2">
+    <article className="
+      prose prose-sm mt-4 px-2 pb-2
+      dark:prose-invert
+    "
+    >
       <h2>СОГЛАСИЕ НА ПОЛУЧЕНИЕ РЕКЛАМЫ</h2>
 
       <p>

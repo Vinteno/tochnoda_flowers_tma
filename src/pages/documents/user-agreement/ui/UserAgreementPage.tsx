@@ -12,7 +12,11 @@ export function UserAgreementPage() {
   useBackButton(handleBack)
 
   return (
-    <article className="prose prose-sm mt-4 px-2 pb-2">
+    <article className="
+      prose prose-sm mt-4 px-2 pb-2
+      dark:prose-invert
+    "
+    >
       <h2>ПУБЛИЧНАЯ ОФЕРТА ИНТЕРНЕТ-МАГАЗИНА "FLORIS"</h2>
 
       <h2>1. ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ</h2>
