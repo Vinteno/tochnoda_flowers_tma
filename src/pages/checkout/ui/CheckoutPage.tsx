@@ -368,7 +368,7 @@ export function CheckoutPage() {
                             w-full font-normal
                             [&>input]:text-sm!
                           "
-                          placeholder="+7 (999) 123-45-67"
+                          placeholder="+7 999 123 45 67"
                           value={field.value ?? ''}
                           onChange={field.onChange}
                         />
@@ -488,7 +488,7 @@ export function CheckoutPage() {
                                     w-full font-normal
                                     [&>input]:text-sm!
                                   "
-                                  placeholder="+7 (999) 123-45-67"
+                                  placeholder="+7 999 123 45 67"
                                   value={field.value ?? ''}
                                   onChange={field.onChange}
                                 />
