@@ -5,6 +5,7 @@ import { cn, formatPrice, useBackButton } from '@shared/lib'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 import { LuArrowLeft, LuFlower, LuMoveHorizontal, LuMoveVertical } from 'react-icons/lu'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -87,12 +88,13 @@ export function ProductPage({ slug }: ProductPageProps) {
                 >
                   {image.url && isActiveOrNeighbor(index)
                     ? (
-                        <img
+                        <LazyLoadImage
                           src={image.url}
                           alt={product.name}
                           loading={index === selectedImageIndex ? 'eager' : 'lazy'}
                           decoding="async"
-                          className="h-96 w-full object-cover"
+                          visibleByDefault={index === selectedImageIndex}
+                          className="h-96 w-full rounded-xl object-cover"
                         />
                       )
                     : (
@@ -120,12 +122,14 @@ export function ProductPage({ slug }: ProductPageProps) {
                   >
                     {image.url
                       ? (
-                          <img
+                          <LazyLoadImage
                             src={image.url}
                             alt={`${product.name} ${index + 1}`}
                             loading={index === selectedImageIndex ? 'eager' : 'lazy'}
                             decoding="async"
                             className="size-full object-contain"
+                            height={80}
+                            width={80}
                           />
                         )
                       : (

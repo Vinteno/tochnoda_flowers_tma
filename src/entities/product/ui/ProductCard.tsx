@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import type { Product, RelatedProduct } from '../model/types'
 import { cn, formatPrice } from '@shared/lib'
 import { Link } from '@tanstack/react-router'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 interface ProductCardProps extends ComponentProps<'li'> {
   product: Product | RelatedProduct
@@ -22,12 +23,13 @@ export function ProductCard({ product, ...props }: ProductCardProps) {
         <div className="h-42 w-full overflow-hidden">
           {product.thumbnail
             ? (
-                <img
+                <LazyLoadImage
                   src={product.thumbnail}
                   alt={product.name}
                   loading="lazy"
                   decoding="async"
                   className="h-42 w-full object-cover"
+                  height={168}
                 />
               )
             : (
