@@ -62,6 +62,17 @@ export function ProductPage({ slug }: ProductPageProps) {
 
   const images = product.images.length > 0 ? product.images : [{ id: 0, url: product.thumbnail || '', is_thumbnail: true }]
   const metadata = product.metadata as Record<string, unknown> | null
+  const totalImages = images.length
+  const isActiveOrNeighbor = (index: number) => {
+    if (totalImages <= 1) {
+      return true
+    }
+
+    const prevIndex = (selectedImageIndex - 1 + totalImages) % totalImages
+    const nextIndex = (selectedImageIndex + 1) % totalImages
+
+    return index === selectedImageIndex || index === prevIndex || index === nextIndex
+  }
 
   return (
     <>
@@ -74,11 +85,13 @@ export function ProductPage({ slug }: ProductPageProps) {
                   key={image.id || index}
                   className="pl-0"
                 >
-                  {image.url
+                  {image.url && isActiveOrNeighbor(index)
                     ? (
                         <img
                           src={image.url}
                           alt={product.name}
+                          loading={index === selectedImageIndex ? 'eager' : 'lazy'}
+                          decoding="async"
                           className="h-96 w-full object-cover"
                         />
                       )
@@ -110,6 +123,8 @@ export function ProductPage({ slug }: ProductPageProps) {
                           <img
                             src={image.url}
                             alt={`${product.name} ${index + 1}`}
+                            loading={index === selectedImageIndex ? 'eager' : 'lazy'}
+                            decoding="async"
                             className="size-full object-contain"
                           />
                         )
