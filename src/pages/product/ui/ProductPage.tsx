@@ -15,10 +15,10 @@ import { ProductPageSkeleton } from './ProductPageSkeleton'
 interface CarouselImageProps {
   image: ProductImage
   productName: string
-  isActive: boolean
+  isFirst: boolean
 }
 
-const CarouselImage = memo(({ image, productName, isActive }: CarouselImageProps) => {
+const CarouselImage = memo(({ image, productName, isFirst }: CarouselImageProps) => {
   const mainSources = useMemo(() => getImageSources(image, 'main'), [image])
 
   if (!mainSources.fallbackSrc) {
@@ -31,9 +31,9 @@ const CarouselImage = memo(({ image, productName, isActive }: CarouselImageProps
       mode="main"
       sources={mainSources}
       alt={productName}
-      loading={isActive ? 'eager' : 'lazy'}
+      loading={isFirst ? 'eager' : 'lazy'}
       decoding="async"
-      fetchPriority={isActive ? 'high' : 'auto'}
+      fetchPriority={isFirst ? 'high' : 'auto'}
       className="h-96 w-full rounded-xl object-cover will-change-transform"
       width={400}
       height={384}
@@ -169,7 +169,7 @@ export function ProductPage({ slug }: ProductPageProps) {
                   <CarouselImage
                     image={image}
                     productName={product.name}
-                    isActive={index === selectedImageIndex}
+                    isFirst={index === 0}
                   />
                 </CarouselItem>
               ))}
