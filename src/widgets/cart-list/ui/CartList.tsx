@@ -74,6 +74,7 @@ export function CartList() {
                   className="size-7 rounded-full bg-transparent"
                   size="icon"
                   onClick={() => handleIncrement(item.product_id, item.quantity)}
+                  disabled={item.stock_quantity <= 0 || item.quantity >= item.stock_quantity}
                 >
                   <LuPlus className="size-5" strokeWidth={1.5} />
                 </Button>

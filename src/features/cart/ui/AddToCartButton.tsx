@@ -25,6 +25,7 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
       best_price: product.best_price,
       thumbnail: product.thumbnail,
       sku: product.sku,
+      stock_quantity: product.stock_quantity,
     })
   }
 

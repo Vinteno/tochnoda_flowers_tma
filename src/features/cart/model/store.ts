@@ -115,7 +115,11 @@ export const useCartStore = create<CartState>()(
         if (existingItem) {
           newItems = items.map(item =>
             item.product_id === productId
-              ? { ...item, quantity: item.quantity + quantity }
+              ? {
+                  ...item,
+                  quantity: item.quantity + quantity,
+                  stock_quantity: productData?.stock_quantity ?? item.stock_quantity,
+                }
               : item,
           )
         }
@@ -128,6 +132,7 @@ export const useCartStore = create<CartState>()(
             price: productData?.price || 0,
             best_price: productData?.best_price || productData?.price || 0,
             quantity,
+            stock_quantity: productData?.stock_quantity ?? 0,
             thumbnail: productData?.thumbnail || null,
           }
           newItems = [...items, newItem]

@@ -8,6 +8,7 @@ export interface CartItem {
   price: number
   best_price: number
   quantity: number
+  stock_quantity: number
   thumbnail: ImageSet | null
   line_total?: number
 }

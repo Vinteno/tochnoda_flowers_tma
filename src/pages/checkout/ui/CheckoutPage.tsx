@@ -33,7 +33,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 export function CheckoutPage() {
   const navigate = useNavigate()
-  const { subtotal, clear: clearCart } = useCartStore()
+  const { subtotal, clear: clearCart, items } = useCartStore()
   const { user } = useAuthStore()
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
@@ -172,6 +172,10 @@ export function CheckoutPage() {
     : 0
   const totalWithDelivery = subtotal + deliveryFee
   const totalWithDiscount = Math.max(0, totalWithDelivery - promoState.discount)
+  const hasOutOfStockItems = useMemo(
+    () => (items ?? []).some(item => item.stock_quantity <= 0),
+    [items],
+  )
 
   const selectedSlot = useMemo(() => {
     if (!deliverySlotId || !deliverySlotType) {
@@ -271,6 +275,10 @@ export function CheckoutPage() {
   }, [debouncedPromoCode, totalWithDelivery, form])
 
   const handleSubmit = async (values: CheckoutFormData) => {
+    if (hasOutOfStockItems) {
+      return
+    }
+
     const orderData: CreateOrderData = {
       customer_name: values.customer_name.trim(),
       customer_phone: cleanOptional(values.customer_phone),
@@ -601,6 +609,7 @@ export function CheckoutPage() {
             || !form.formState.isValid
             || promoCode.trim() !== debouncedPromoCode
             || validatePromo.isPending
+            || hasOutOfStockItems
           }
         >
           <div className="flex items-center gap-2">
@@ -613,6 +622,12 @@ export function CheckoutPage() {
           </div>
           <p>{formatPrice(totalWithDiscount)}</p>
         </Button>
+
+        {hasOutOfStockItems && (
+          <p className="text-center text-xs text-destructive">
+            В корзине есть товары, которых нет в наличии
+          </p>
+        )}
 
         <p className="text-center text-xs text-muted-foreground">
           Нажимая кнопку, вы принимаете
