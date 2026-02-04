@@ -1,3 +1,5 @@
 export { formatPrice } from './formatters'
+export { getImageSources } from './images'
+export type { ImageMode, ImageSet, ImageSources, ImageVariants, ImageWithPreview } from './images'
 export * from './telegram'
 export { cn, debounce } from './utils'

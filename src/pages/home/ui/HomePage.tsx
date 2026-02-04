@@ -1,5 +1,7 @@
 import { useProducts } from '@entities/product'
 import { usePromotions } from '@entities/promotion'
+import { getImageSources } from '@shared/lib'
+import { ResponsiveImage } from '@shared/ui'
 import { useDebounce } from '@uidotdev/usehooks'
 import { CategoryFilter } from '@widgets/category-filter'
 import { ProductList } from '@widgets/product-list'
@@ -22,23 +24,39 @@ export function HomePage() {
 
   const featuredBanner = useMemo(() => {
     const items = promotionsData ?? []
-    return items
-      .filter(promotion => Boolean(promotion.banner_url))
+    const promotion = items
+      .filter(promotion => Boolean(promotion.banner?.original || promotion.banner?.small))
       .sort((a, b) => {
         const aStartsAt = a.starts_at ? Date.parse(a.starts_at) : Number.NEGATIVE_INFINITY
         const bStartsAt = b.starts_at ? Date.parse(b.starts_at) : Number.NEGATIVE_INFINITY
         return bStartsAt - aStartsAt
       })[0]
+    if (!promotion?.banner) {
+      return null
+    }
+    return { promotion, banner: promotion.banner }
   }, [promotionsData])
+
+  const bannerSources = featuredBanner?.banner
+    ? getImageSources(featuredBanner.banner, 'banner')
+    : null
 
   return (
     <>
-      {featuredBanner?.banner_url && (
+      {featuredBanner && bannerSources?.fallbackSrc && (
         <div className="mt-4 px-2">
-          <img
+          <ResponsiveImage
+            image={featuredBanner.banner}
+            mode="banner"
+            sources={bannerSources}
             className="h-48 w-full rounded-2xl object-cover"
-            src={featuredBanner.banner_url}
-            alt={featuredBanner.name}
+            alt={featuredBanner.promotion.name}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            width={400}
+            height={192}
+            sizes="100vw"
           />
         </div>
       )}

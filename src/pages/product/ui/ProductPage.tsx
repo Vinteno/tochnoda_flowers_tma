@@ -1,11 +1,11 @@
 import type { CarouselApi } from '@/components/ui/carousel'
 import { ProductCard, useProduct } from '@entities/product'
 import { AddToCartButton } from '@features/cart'
-import { cn, formatPrice, useBackButton } from '@shared/lib'
+import { cn, formatPrice, getImageSources, useBackButton } from '@shared/lib'
+import { ResponsiveImage } from '@shared/ui'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 import { LuArrowLeft, LuFlower, LuMoveHorizontal, LuMoveVertical } from 'react-icons/lu'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -61,7 +61,18 @@ export function ProductPage({ slug }: ProductPageProps) {
     )
   }
 
-  const images = product.images.length > 0 ? product.images : [{ id: 0, url: product.thumbnail || '', is_thumbnail: true }]
+  const images = product.images.length > 0
+    ? product.images
+    : [{
+        id: 0,
+        original: product.thumbnail?.original || '',
+        thumb: product.thumbnail?.thumb || '',
+        preview: product.thumbnail?.original || '',
+        webp: product.thumbnail?.webp
+          ? { original: product.thumbnail.webp.original, thumb: product.thumbnail.webp.thumb, preview: product.thumbnail.webp.original }
+          : undefined,
+        is_thumbnail: true,
+      }]
   const metadata = product.metadata as Record<string, unknown> | null
   const totalImages = images.length
   const isActiveOrNeighbor = (index: number) => {
@@ -81,27 +92,33 @@ export function ProductPage({ slug }: ProductPageProps) {
         <div className="relative overflow-hidden rounded-md">
           <Carousel setApi={setCarouselApi} opts={{ loop: true }}>
             <CarouselContent className="ml-0">
-              {images.map((image, index) => (
-                <CarouselItem
-                  key={image.id || index}
-                  className="pl-0"
-                >
-                  {image.url && isActiveOrNeighbor(index)
-                    ? (
-                        <LazyLoadImage
-                          src={image.url}
-                          alt={product.name}
-                          loading={index === selectedImageIndex ? 'eager' : 'lazy'}
-                          decoding="async"
-                          visibleByDefault={index === selectedImageIndex}
-                          className="h-96 w-full rounded-xl object-cover"
-                        />
-                      )
-                    : (
-                        <div className="h-96 w-full bg-secondary" />
-                      )}
-                </CarouselItem>
-              ))}
+              {images.map((image, index) => {
+                const mainSources = getImageSources(image, 'main')
+                return (
+                  <CarouselItem
+                    key={image.id || index}
+                    className="pl-0"
+                  >
+                    {mainSources.fallbackSrc && isActiveOrNeighbor(index)
+                      ? (
+                          <ResponsiveImage
+                            image={image}
+                            mode="main"
+                            sources={mainSources}
+                            alt={product.name}
+                            loading={index === selectedImageIndex ? 'eager' : 'lazy'}
+                            decoding="async"
+                            fetchPriority={index === selectedImageIndex ? 'high' : 'auto'}
+                            className="h-96 w-full rounded-xl object-cover"
+                            sizes="100vw"
+                          />
+                        )
+                      : (
+                          <div className="h-96 w-full bg-secondary" />
+                        )}
+                  </CarouselItem>
+                )
+              })}
             </CarouselContent>
           </Carousel>
         </div>
@@ -111,33 +128,39 @@ export function ProductPage({ slug }: ProductPageProps) {
         <div className="mt-2 px-2">
           <ScrollArea className="rounded-md">
             <ul className="flex gap-1">
-              {images.map((image, index) => (
-                <li key={image.id}>
-                  <button
-                    className={cn(`
-                      size-20 cursor-pointer overflow-hidden rounded-md
-                      transition-opacity
-                    `, { 'opacity-50': index !== selectedImageIndex })}
-                    onClick={() => carouselApi?.scrollTo(index)}
-                  >
-                    {image.url
-                      ? (
-                          <LazyLoadImage
-                            src={image.url}
-                            alt={`${product.name} ${index + 1}`}
-                            loading={index === selectedImageIndex ? 'eager' : 'lazy'}
-                            decoding="async"
-                            className="size-full object-contain"
-                            height={80}
-                            width={80}
-                          />
-                        )
-                      : (
-                          <div className="size-full bg-secondary" />
-                        )}
-                  </button>
-                </li>
-              ))}
+              {images.map((image, index) => {
+                const thumbSources = getImageSources(image, 'thumb')
+                return (
+                  <li key={image.id}>
+                    <button
+                      className={cn(`
+                        size-20 cursor-pointer overflow-hidden rounded-xl
+                        transition-opacity
+                      `, { 'opacity-50': index !== selectedImageIndex })}
+                      onClick={() => carouselApi?.scrollTo(index)}
+                    >
+                      {thumbSources.fallbackSrc
+                        ? (
+                            <ResponsiveImage
+                              image={image}
+                              mode="thumb"
+                              sources={thumbSources}
+                              alt={`${product.name} ${index + 1}`}
+                              loading={index === selectedImageIndex ? 'eager' : 'lazy'}
+                              decoding="async"
+                              className="size-full object-contain"
+                              height={80}
+                              width={80}
+                              sizes="80px"
+                            />
+                          )
+                        : (
+                            <div className="size-full bg-secondary" />
+                          )}
+                    </button>
+                  </li>
+                )
+              })}
             </ul>
             <ScrollBar
               orientation="horizontal"

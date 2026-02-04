@@ -1,3 +1,5 @@
+import type { ImageSet } from '@shared/lib'
+
 export interface CartItem {
   product_id: number
   name: string
@@ -6,7 +8,7 @@ export interface CartItem {
   price: number
   best_price: number
   quantity: number
-  thumbnail: string | null
+  thumbnail: ImageSet | null
   line_total?: number
 }
 

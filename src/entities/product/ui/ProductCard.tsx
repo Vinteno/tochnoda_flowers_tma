@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import type { Product, RelatedProduct } from '../model/types'
-import { cn, formatPrice } from '@shared/lib'
+import { cn, formatPrice, getImageSources } from '@shared/lib'
+import { ResponsiveImage } from '@shared/ui'
 import { Link } from '@tanstack/react-router'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 interface ProductCardProps extends ComponentProps<'li'> {
   product: Product | RelatedProduct
@@ -10,6 +10,9 @@ interface ProductCardProps extends ComponentProps<'li'> {
 
 export function ProductCard({ product, ...props }: ProductCardProps) {
   const hasDiscount = product.best_price < product.price
+
+  const thumbnail = product.thumbnail
+  const thumbnailSources = getImageSources(thumbnail, 'card')
 
   return (
     <li {...props}>
@@ -20,16 +23,20 @@ export function ProductCard({ product, ...props }: ProductCardProps) {
         to="/product/$slug"
         params={{ slug: product.slug }}
       >
-        <div className="h-42 w-full overflow-hidden">
-          {product.thumbnail
+        <div className="h-42 w-full overflow-hidden bg-secondary">
+          {thumbnailSources.fallbackSrc
             ? (
-                <LazyLoadImage
-                  src={product.thumbnail}
+                <ResponsiveImage
+                  image={thumbnail}
+                  mode="card"
+                  sources={thumbnailSources}
                   alt={product.name}
                   loading="lazy"
                   decoding="async"
                   className="h-42 w-full object-cover"
+                  width={200}
                   height={168}
+                  sizes="(max-width: 640px) 50vw, 200px"
                 />
               )
             : (

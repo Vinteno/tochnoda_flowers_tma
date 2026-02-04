@@ -1,3 +1,4 @@
+import type { ImageSet, ImageWithPreview } from '@shared/lib'
 import type { PaginatedResponse } from '../types'
 
 // Temporary types until entities layer is created
@@ -12,7 +13,12 @@ interface Category {
   products_count?: number
 }
 
-interface ProductImage {
+interface ProductImage extends ImageWithPreview {
+  id: number
+  is_thumbnail: boolean
+}
+
+interface LegacyProductImage {
   id: number
   url: string
   is_thumbnail: boolean
@@ -30,7 +36,7 @@ interface Product {
   stock_quantity: number
   is_active: boolean
   sku: string | null
-  thumbnail: string | null
+  thumbnail: ImageSet | null
   images: ProductImage[]
   category: Category | null
   metadata: Record<string, unknown> | null
@@ -39,7 +45,22 @@ interface Product {
   updated_at: string
 }
 
+interface LegacyProduct extends Omit<Product, 'images' | 'thumbnail' | 'related_products'> {
+  thumbnail: string | null
+  images: LegacyProductImage[]
+  related_products?: LegacyRelatedProduct[]
+}
+
 interface RelatedProduct {
+  id: number
+  name: string
+  slug: string
+  price: number
+  best_price: number
+  thumbnail: ImageSet | null
+}
+
+interface LegacyRelatedProduct {
   id: number
   name: string
   slug: string
@@ -81,6 +102,14 @@ interface Promotion {
   slug: string
   description: string | null
   code: string | null
+  banner?: {
+    original: string
+    small: string
+    webp?: {
+      original: string
+      small: string
+    }
+  } | null
   discount_type: 'percentage' | 'fixed' | 'final_price'
   discount_value: number
   min_order_amount: number | null
@@ -183,7 +212,34 @@ export const testCategories: Category[] = [
 
 // ==================== Products ====================
 
-export const testProducts: Product[] = [
+const mapLegacyImage = (image: LegacyProductImage): ProductImage => ({
+  id: image.id,
+  original: image.url,
+  thumb: image.url,
+  preview: image.url,
+  is_thumbnail: image.is_thumbnail,
+})
+
+const mapLegacyThumbnail = (url: string | null): ImageSet | null => {
+  if (!url) {
+    return null
+  }
+  return { original: url, thumb: url }
+}
+
+const mapLegacyRelatedProduct = (product: LegacyRelatedProduct): RelatedProduct => ({
+  ...product,
+  thumbnail: mapLegacyThumbnail(product.thumbnail),
+})
+
+const normalizeLegacyProduct = (product: LegacyProduct): Product => ({
+  ...product,
+  thumbnail: mapLegacyThumbnail(product.thumbnail),
+  images: product.images.map(mapLegacyImage),
+  related_products: product.related_products?.map(mapLegacyRelatedProduct),
+})
+
+const legacyProducts: LegacyProduct[] = [
   {
     id: 1,
     name: 'Букет "Нежность"',
@@ -670,6 +726,8 @@ export const testProducts: Product[] = [
   },
 ]
 
+export const testProducts: Product[] = legacyProducts.map(normalizeLegacyProduct)
+
 // ==================== Delivery Dates ====================
 
 const today = new Date()
@@ -766,6 +824,10 @@ export const testPromotions: Promotion[] = [
     slug: 'first-order-15',
     description: 'Получите скидку 15% на ваш первый заказ! Используйте промокод при оформлении.',
     code: 'WELCOME15',
+    banner: {
+      original: '/images/placeholders/bouqet.png',
+      small: '/images/placeholders/bouqet.png',
+    },
     discount_type: 'percentage',
     discount_value: 15,
     min_order_amount: 3000,

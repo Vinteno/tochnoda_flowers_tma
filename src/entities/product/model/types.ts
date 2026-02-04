@@ -1,6 +1,7 @@
-export interface ProductImage {
+import type { ImageSet, ImageWithPreview } from '@shared/lib'
+
+export interface ProductImage extends ImageWithPreview {
   id: number
-  url: string
   is_thumbnail: boolean
 }
 
@@ -16,7 +17,7 @@ export interface Product {
   stock_quantity: number
   is_active: boolean
   sku: string | null
-  thumbnail: string | null
+  thumbnail: ImageSet | null
   images: ProductImage[]
   category: import('@entities/category').Category | null
   metadata: Record<string, unknown> | null
@@ -31,7 +32,7 @@ export interface RelatedProduct {
   slug: string
   price: number
   best_price: number
-  thumbnail: string | null
+  thumbnail: ImageSet | null
 }
 
 export interface ProductFilters {
