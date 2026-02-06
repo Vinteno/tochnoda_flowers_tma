@@ -65,12 +65,12 @@ const DocumentsAdvertisingMessagesIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/product/$slug': typeof ProductSlugRoute
-  '/cart': typeof CartIndexRoute
-  '/checkout': typeof CheckoutIndexRoute
-  '/documents/advertising-messages': typeof DocumentsAdvertisingMessagesIndexRoute
-  '/documents/privacy-policy': typeof DocumentsPrivacyPolicyIndexRoute
-  '/documents/user-agreement': typeof DocumentsUserAgreementIndexRoute
-  '/order/result': typeof OrderResultIndexRoute
+  '/cart/': typeof CartIndexRoute
+  '/checkout/': typeof CheckoutIndexRoute
+  '/documents/advertising-messages/': typeof DocumentsAdvertisingMessagesIndexRoute
+  '/documents/privacy-policy/': typeof DocumentsPrivacyPolicyIndexRoute
+  '/documents/user-agreement/': typeof DocumentsUserAgreementIndexRoute
+  '/order/result/': typeof OrderResultIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -98,12 +98,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/product/$slug'
-    | '/cart'
-    | '/checkout'
-    | '/documents/advertising-messages'
-    | '/documents/privacy-policy'
-    | '/documents/user-agreement'
-    | '/order/result'
+    | '/cart/'
+    | '/checkout/'
+    | '/documents/advertising-messages/'
+    | '/documents/privacy-policy/'
+    | '/documents/user-agreement/'
+    | '/order/result/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -149,14 +149,14 @@ declare module '@tanstack/react-router' {
     '/checkout/': {
       id: '/checkout/'
       path: '/checkout'
-      fullPath: '/checkout'
+      fullPath: '/checkout/'
       preLoaderRoute: typeof CheckoutIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart/': {
       id: '/cart/'
       path: '/cart'
-      fullPath: '/cart'
+      fullPath: '/cart/'
       preLoaderRoute: typeof CartIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -170,28 +170,28 @@ declare module '@tanstack/react-router' {
     '/order/result/': {
       id: '/order/result/'
       path: '/order/result'
-      fullPath: '/order/result'
+      fullPath: '/order/result/'
       preLoaderRoute: typeof OrderResultIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents/user-agreement/': {
       id: '/documents/user-agreement/'
       path: '/documents/user-agreement'
-      fullPath: '/documents/user-agreement'
+      fullPath: '/documents/user-agreement/'
       preLoaderRoute: typeof DocumentsUserAgreementIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents/privacy-policy/': {
       id: '/documents/privacy-policy/'
       path: '/documents/privacy-policy'
-      fullPath: '/documents/privacy-policy'
+      fullPath: '/documents/privacy-policy/'
       preLoaderRoute: typeof DocumentsPrivacyPolicyIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents/advertising-messages/': {
       id: '/documents/advertising-messages/'
       path: '/documents/advertising-messages'
-      fullPath: '/documents/advertising-messages'
+      fullPath: '/documents/advertising-messages/'
       preLoaderRoute: typeof DocumentsAdvertisingMessagesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
