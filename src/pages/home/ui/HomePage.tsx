@@ -66,7 +66,7 @@ export function HomePage() {
         <div className="rounded-b-xl bg-background px-2 pb-2">
           <ButtonGroup className="w-full">
             <ButtonGroup className="w-full">
-              <InputGroup className="h-10 w-full border-secondary!">
+              <InputGroup className="h-10 w-full border-border!">
                 <InputGroupInput
                   className="text-sm"
                   placeholder="Поиск по каталогу..."
