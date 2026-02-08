@@ -31,7 +31,7 @@ export function BottomNav({ active = 'home', action, className, ...props }: Bott
       <nav className="flex w-full justify-evenly">
         <Button
           size="icon"
-          className={cn('flex size-auto flex-col gap-0 pt-1 pb-0.5 text-xs', { 'text-primary': active === 'home' })}
+          className={cn('flex size-auto flex-col gap-0 px-6 pt-1 pb-0.5 text-xs', { 'text-primary': active === 'home' })}
           variant="ghost"
           asChild
         >
@@ -42,7 +42,7 @@ export function BottomNav({ active = 'home', action, className, ...props }: Bott
         </Button>
         <Button
           size="icon"
-          className={cn('flex size-auto flex-col gap-0 pt-1 pb-0.5 text-xs', { 'text-primary': active === 'cart' })}
+          className={cn('flex size-auto flex-col gap-0 px-6 pt-1 pb-0.5 text-xs', { 'text-primary': active === 'cart' })}
           variant="ghost"
           asChild
         >
@@ -53,7 +53,7 @@ export function BottomNav({ active = 'home', action, className, ...props }: Bott
         </Button>
         <Button
           size="icon"
-          className={cn('flex size-auto flex-col gap-0 pt-1 pb-0.5 text-xs', { 'text-primary': active === 'orders' })}
+          className={cn('flex size-auto flex-col gap-0 px-6 pt-1 pb-0.5 text-xs', { 'text-primary': active === 'orders' })}
           variant="ghost"
           asChild
         >
