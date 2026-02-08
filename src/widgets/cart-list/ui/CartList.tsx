@@ -70,18 +70,24 @@ export function CartList() {
               </Link>
               <div className="flex flex-col items-center justify-between">
                 <Button
-                  variant="secondary"
-                  className="size-7 rounded-full bg-transparent"
+                  variant="ghost"
+                  className="
+                    size-7 bg-transparent text-primary
+                    hover:bg-transparent!
+                  "
                   size="icon"
                   onClick={() => handleIncrement(item.product_id, item.quantity)}
                   disabled={item.stock_quantity <= 0 || item.quantity >= item.stock_quantity}
                 >
                   <LuPlus className="size-5" strokeWidth={1.5} />
                 </Button>
-                <p className="text-sm font-medium">{item.quantity}</p>
+                <p className="text-sm font-medium text-primary">{item.quantity}</p>
                 <Button
-                  variant="secondary"
-                  className="size-7 rounded-full bg-transparent"
+                  variant="ghost"
+                  className="
+                    size-7 bg-transparent text-primary
+                    hover:bg-transparent!
+                  "
                   size="icon"
                   onClick={() => handleDecrement(item.product_id, item.quantity)}
                 >
