@@ -3,6 +3,7 @@ import { usePromotions } from '@entities/promotion'
 import { getImageSources } from '@shared/lib'
 import { ResponsiveImage } from '@shared/ui'
 import { useDebounce } from '@uidotdev/usehooks'
+import { BottomNav } from '@widgets/bottom-nav'
 import { CategoryFilter } from '@widgets/category-filter'
 import { ProductList } from '@widgets/product-list'
 import { useMemo, useState } from 'react'
@@ -95,6 +96,8 @@ export function HomePage() {
           isLoading={productsLoading}
         />
       </section>
+
+      <BottomNav active="home" />
     </>
   )
 }

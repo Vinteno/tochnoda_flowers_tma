@@ -24,3 +24,7 @@ export type {
   PaymentStatus,
   ShippingAddress,
 } from './model/types'
+
+// UI components
+export { OrderCard } from './ui/OrderCard'
+export { OrderStatusBadge } from './ui/OrderStatusBadge'

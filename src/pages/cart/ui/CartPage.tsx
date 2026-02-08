@@ -1,6 +1,7 @@
 import { useCartStore } from '@features/cart'
 import { formatPrice, useBackButton } from '@shared/lib'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { BottomNav } from '@widgets/bottom-nav'
 import { CartList } from '@widgets/cart-list'
 import { ArrowRight } from 'lucide-react'
 import { useCallback } from 'react'
@@ -27,32 +28,33 @@ export function CartPage() {
 
   return (
     <>
-      <section className="mt-4 flex-1 px-2 pb-28">
+      <section className="mt-4 flex-1 px-2 pb-40">
         <CartList />
       </section>
 
-      <footer className="
-        fixed right-0 bottom-0 left-0 w-full rounded-t-lg bg-background px-2
-        pt-2 safe-area-bottom
-      "
-      >
-        <Button
-          className="flex h-10 w-full flex-col gap-0 text-sm/tight"
-          onClick={() => navigate({ to: '/checkout' })}
-        >
-          <div className="flex items-center gap-1.5">
-            Перейти к оформлению
-            <ArrowRight />
-          </div>
-          <p className="text-xs font-normal">
-            {totalQuantity}
-            {' '}
-            шт,
-            {' '}
-            {formatPrice(total)}
-          </p>
-        </Button>
-      </footer>
+      <BottomNav
+        active="cart"
+        action={(
+          <Button
+            className="flex h-10 w-full flex-col gap-0 text-sm/tight"
+            asChild
+          >
+            <Link to="/checkout">
+              <div className="flex items-center gap-1.5">
+                Перейти к оформлению
+                <ArrowRight />
+              </div>
+              <p className="text-xs font-normal">
+                {totalQuantity}
+                {' '}
+                шт,
+                {' '}
+                {formatPrice(total)}
+              </p>
+            </Link>
+          </Button>
+        )}
+      />
     </>
   )
 }

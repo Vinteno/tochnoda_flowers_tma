@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrdersIndexRouteImport } from './routes/orders/index'
 import { Route as CheckoutIndexRouteImport } from './routes/checkout/index'
 import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as ProductSlugRouteImport } from './routes/product/$slug'
@@ -21,6 +22,11 @@ import { Route as DocumentsAdvertisingMessagesIndexRouteImport } from './routes/
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersIndexRoute = OrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutIndexRoute = CheckoutIndexRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/product/$slug': typeof ProductSlugRoute
   '/cart': typeof CartIndexRoute
   '/checkout': typeof CheckoutIndexRoute
+  '/orders': typeof OrdersIndexRoute
   '/documents/advertising-messages': typeof DocumentsAdvertisingMessagesIndexRoute
   '/documents/privacy-policy': typeof DocumentsPrivacyPolicyIndexRoute
   '/documents/user-agreement': typeof DocumentsUserAgreementIndexRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/product/$slug': typeof ProductSlugRoute
   '/cart': typeof CartIndexRoute
   '/checkout': typeof CheckoutIndexRoute
+  '/orders': typeof OrdersIndexRoute
   '/documents/advertising-messages': typeof DocumentsAdvertisingMessagesIndexRoute
   '/documents/privacy-policy': typeof DocumentsPrivacyPolicyIndexRoute
   '/documents/user-agreement': typeof DocumentsUserAgreementIndexRoute
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/product/$slug': typeof ProductSlugRoute
   '/cart/': typeof CartIndexRoute
   '/checkout/': typeof CheckoutIndexRoute
+  '/orders/': typeof OrdersIndexRoute
   '/documents/advertising-messages/': typeof DocumentsAdvertisingMessagesIndexRoute
   '/documents/privacy-policy/': typeof DocumentsPrivacyPolicyIndexRoute
   '/documents/user-agreement/': typeof DocumentsUserAgreementIndexRoute
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/cart'
     | '/checkout'
+    | '/orders'
     | '/documents/advertising-messages'
     | '/documents/privacy-policy'
     | '/documents/user-agreement'
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/cart'
     | '/checkout'
+    | '/orders'
     | '/documents/advertising-messages'
     | '/documents/privacy-policy'
     | '/documents/user-agreement'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/product/$slug'
     | '/cart/'
     | '/checkout/'
+    | '/orders/'
     | '/documents/advertising-messages/'
     | '/documents/privacy-policy/'
     | '/documents/user-agreement/'
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   ProductSlugRoute: typeof ProductSlugRoute
   CartIndexRoute: typeof CartIndexRoute
   CheckoutIndexRoute: typeof CheckoutIndexRoute
+  OrdersIndexRoute: typeof OrdersIndexRoute
   DocumentsAdvertisingMessagesIndexRoute: typeof DocumentsAdvertisingMessagesIndexRoute
   DocumentsPrivacyPolicyIndexRoute: typeof DocumentsPrivacyPolicyIndexRoute
   DocumentsUserAgreementIndexRoute: typeof DocumentsUserAgreementIndexRoute
@@ -144,6 +157,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders/': {
+      id: '/orders/'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout/': {
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductSlugRoute: ProductSlugRoute,
   CartIndexRoute: CartIndexRoute,
   CheckoutIndexRoute: CheckoutIndexRoute,
+  OrdersIndexRoute: OrdersIndexRoute,
   DocumentsAdvertisingMessagesIndexRoute:
     DocumentsAdvertisingMessagesIndexRoute,
   DocumentsPrivacyPolicyIndexRoute: DocumentsPrivacyPolicyIndexRoute,
