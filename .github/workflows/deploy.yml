@@ -14,7 +14,7 @@ concurrency:
 env:
   NODE_VERSION: '24'
   BUN_VERSION: 'latest'
-  DEPLOY_PATH: '/var/www/iris-tma'
+  DEPLOY_PATH: '/var/www/floris-tma'
 
 jobs:
   build-and-deploy:
@@ -51,7 +51,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            'sudo chown -R ${{ secrets.SSH_USER }}:www-data /var/www/iris-tma'
+            'sudo chown -R ${{ secrets.SSH_USER }}:www-data /var/www/floris-tma'
 
       - name: Deploy to server
         run: |
@@ -64,8 +64,8 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash -s' << 'ENDSSH'
-          sudo chown -R www-data:www-data /var/www/iris-tma
-          sudo chmod -R 755 /var/www/iris-tma
+          sudo chown -R www-data:www-data /var/www/floris-tma
+          sudo chmod -R 755 /var/www/floris-tma
           echo "Frontend deploy completed!"
           ENDSSH
 
