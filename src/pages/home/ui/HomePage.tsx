@@ -62,7 +62,7 @@ export function HomePage() {
         </div>
       )}
 
-      <section className="relative mt-4 flex flex-col">
+      <section className="relative mt-4 flex flex-col pb-28">
         <div className="rounded-b-xl bg-background px-2 pb-2">
           <ButtonGroup className="w-full">
             <ButtonGroup className="w-full">
