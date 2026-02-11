@@ -824,10 +824,7 @@ export const testPromotions: Promotion[] = [
     slug: 'first-order-15',
     description: 'Получите скидку 15% на ваш первый заказ! Используйте промокод при оформлении.',
     code: 'WELCOME15',
-    banner: {
-      original: '/images/placeholders/bouqet.png',
-      small: '/images/placeholders/bouqet.png',
-    },
+    banner: null,
     discount_type: 'percentage',
     discount_value: 15,
     min_order_amount: 3000,
