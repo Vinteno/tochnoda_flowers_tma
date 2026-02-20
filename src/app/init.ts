@@ -1,4 +1,5 @@
 import type { ThemeParams } from '@tma.js/sdk-react'
+import { bridge, getPlatform } from '@shared/lib/bridge'
 import { THEME_PRIMARY_MAIN_BUTTON_PARAMS } from '@shared/lib/telegram'
 import {
   backButton,
@@ -25,6 +26,12 @@ export async function init(options: {
   mockForMacOS: boolean
   platform: string
 }): Promise<void> {
+  const platformName = getPlatform()
+  if (platformName === 'max') {
+    bridge.ready()
+    return
+  }
+
   // Set @telegram-apps/sdk-react debug mode and initialize it.
   setDebug(options.debug)
   initSDK()

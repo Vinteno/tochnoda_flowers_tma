@@ -1,7 +1,7 @@
 import type { AuthResponse, Customer } from '@entities/customer'
 import { useCartStore } from '@features/cart'
 import { apiClient } from '@shared/api'
-import { initData } from '@tma.js/sdk-react'
+import { bridge, getPlatform } from '@shared/lib/bridge'
 import { jwtDecode } from 'jwt-decode'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -57,15 +57,17 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true, error: null })
 
           try {
-            // Get raw initData from Telegram Mini App
-            const rawInitData = initData.raw()
+            // Get raw initData from Bridge
+            const rawInitData = bridge.getInitData()
 
             if (!rawInitData) {
               throw new Error('No init data available')
             }
 
             // Authenticate with backend
-            const response = await apiClient.post<AuthResponse>('/auth/telegram', {
+            const platform = getPlatform()
+            const endpoint = platform === 'max' ? '/auth/max' : '/auth/telegram'
+            const response = await apiClient.post<AuthResponse>(endpoint, {
               init_data: rawInitData,
             })
 

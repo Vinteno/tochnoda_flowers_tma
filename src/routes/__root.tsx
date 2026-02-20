@@ -1,8 +1,8 @@
 import { getPendingOrder } from '@entities/order'
 import { useAuthStore } from '@features/auth'
 import { useCartStore } from '@features/cart'
+import { bridge } from '@shared/lib/bridge'
 import { createRootRoute, useNavigate } from '@tanstack/react-router'
-import { retrieveLaunchParams } from '@tma.js/sdk-react'
 import { useEffect, useRef } from 'react'
 import { PageLayout } from '@/app/layouts/PageLayout'
 
@@ -21,8 +21,7 @@ function RootLayout() {
 
     // Check for startapp parameter and redirect to product page
     try {
-      const launchParams = retrieveLaunchParams()
-      const startParam = launchParams.tgWebAppStartParam || ''
+      const startParam = bridge.getStartParam() || ''
 
       if (startParam) {
         navigate({

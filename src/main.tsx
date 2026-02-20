@@ -1,5 +1,6 @@
 import { App, init } from '@app/index'
-import { isTMA, retrieveLaunchParams } from '@tma.js/sdk-react'
+import { bridge, getPlatform } from '@shared/lib/bridge'
+import { isTMA } from '@tma.js/sdk-react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
@@ -9,21 +10,31 @@ import './index.css'
 
 async function bootstrap(): Promise<void> {
   const root = createRoot(document.getElementById('root')!)
+  const platform = getPlatform()
 
-  if (!import.meta.env.DEV && !await isTMA('complete')) {
+  if (!import.meta.env.DEV && platform !== 'max' && !await isTMA('complete')) {
     window.location.replace('https://floris-app.com')
   }
 
-  const launchParams = retrieveLaunchParams()
-  const { tgWebAppPlatform: platform } = launchParams
-  const debug = (launchParams.tgWebAppStartParam || '').includes('debug')
-    || import.meta.env.DEV
+  const startParam = bridge.getStartParam() || ''
+  const debug = startParam.includes('debug') || import.meta.env.DEV
+
+  let mockForMacOS = false
+  if (platform !== 'max') {
+    try {
+      const { retrieveLaunchParams } = await import('@tma.js/sdk-react')
+      mockForMacOS = retrieveLaunchParams().tgWebAppPlatform === 'macos'
+    }
+    catch {
+      // ignore
+    }
+  }
 
   // Configure all application dependencies.
   init({
     debug,
-    mockForMacOS: platform === 'macos',
-    platform,
+    mockForMacOS,
+    platform: bridge.getPlatform(),
   })
     .then(() => {
       root.render(

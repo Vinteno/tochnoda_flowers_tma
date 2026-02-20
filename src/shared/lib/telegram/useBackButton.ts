@@ -1,23 +1,19 @@
-import { backButton } from '@tma.js/sdk-react'
+import { bridge } from '@shared/lib/bridge'
 import { useEffect } from 'react'
 
 /**
- * Хук для управления Telegram Back Button
+ * Хук для управления Back Button
  * @param onBack - callback при нажатии кнопки назад
  */
 export function useBackButton(onBack: () => void) {
   useEffect(() => {
-    if (backButton.show.isAvailable()) {
-      backButton.show()
-    }
+    bridge.showBackButton()
 
-    backButton.onClick(onBack)
+    bridge.onBackButtonClick(onBack)
 
     return () => {
-      backButton.offClick(onBack)
-      if (backButton.hide.isAvailable()) {
-        backButton.hide()
-      }
+      bridge.offBackButtonClick(onBack)
+      bridge.hideBackButton()
     }
   }, [onBack])
 }

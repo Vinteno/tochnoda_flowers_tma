@@ -1,8 +1,8 @@
 import type { ApiResponse } from '@shared/api'
 import type { CreateOrderData, CreateOrderResponse, Order } from '../model/types'
 import { apiClient, queryClient } from '@shared/api'
+import { bridge } from '@shared/lib/bridge'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { openLink, retrieveLaunchParams } from '@tma.js/sdk-react'
 
 const PENDING_ORDER_KEY = 'pending_order'
 
@@ -14,7 +14,7 @@ export interface PendingOrder {
 
 function isIOSPlatform(): boolean {
   try {
-    return retrieveLaunchParams().tgWebAppPlatform === 'ios'
+    return bridge.getPlatform() === 'ios'
   }
   catch {
     return false
@@ -37,7 +37,7 @@ export function savePendingOrder(uuid: string, confirmationUrl: string): void {
  * Opens payment page for pending order
  */
 export function openPaymentPage(url: string): void {
-  openLink(url, { tryInstantView: !isIOSPlatform() })
+  bridge.openLink(url, { tryInstantView: !isIOSPlatform() })
 }
 
 /**
@@ -95,7 +95,7 @@ export function useCreateOrder(options?: {
 
         // Open payment page - user will return to app after payment
         if (!isIOSPlatform()) {
-          openLink(confirmationUrl, {
+          bridge.openLink(confirmationUrl, {
             tryInstantView: true,
           })
         }
