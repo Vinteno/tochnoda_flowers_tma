@@ -275,10 +275,9 @@ export function ProductPage({ slug }: ProductPageProps) {
             </div>
           )}
 
-          {metadata?.size && (
+          {metadata != null && metadata.size != null && metadata.size !== '' && (
             <p className="mt-1 text-muted-foreground">
               <h4 className="text-foreground">Размер:</h4>
-              {' '}
               <span className="text-sm">{String(metadata.size)}</span>
             </p>
           )}
