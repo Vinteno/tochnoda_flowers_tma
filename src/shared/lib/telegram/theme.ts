@@ -1,4 +1,4 @@
 export const THEME_PRIMARY_MAIN_BUTTON_PARAMS = {
-  bgColor: '#52a93d',
+  bgColor: '#c73b28',
   textColor: '#ffffff',
 } as const

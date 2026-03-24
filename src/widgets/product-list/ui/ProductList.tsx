@@ -1,5 +1,6 @@
 import type { Product } from '@entities/product'
 import { ProductCard } from '@entities/product'
+import { AddToCartButton } from '@features/cart'
 import { EmptyState } from '@/shared'
 import { ProductListSkeleton } from './ProductListSkeleton'
 
@@ -27,7 +28,11 @@ export function ProductList({
   return (
     <ul className="my-2 grid grid-cols-2 gap-2 px-2">
       {products.map(product => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          action={<AddToCartButton product={product} compact />}
+        />
       ))}
     </ul>
   )

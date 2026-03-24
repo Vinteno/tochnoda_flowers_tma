@@ -275,6 +275,14 @@ export function ProductPage({ slug }: ProductPageProps) {
             </div>
           )}
 
+          {metadata?.size && (
+            <p className="mt-1 text-muted-foreground">
+              <h4 className="text-foreground">Размер:</h4>
+              {' '}
+              <span className="text-sm">{String(metadata.size)}</span>
+            </p>
+          )}
+
           {product.related_products && product.related_products.length > 0 && (
             <div className="mt-4 flex flex-col gap-2.5">
               <h4 className="font-medium">С этим покупают</h4>

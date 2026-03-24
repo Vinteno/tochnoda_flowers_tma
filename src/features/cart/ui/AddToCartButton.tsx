@@ -1,6 +1,6 @@
 import type { Product } from '@entities/product'
 import { Link } from '@tanstack/react-router'
-import { LuMinus, LuPlus, LuShoppingCart } from 'react-icons/lu'
+import { LuMinus, LuPlus, LuShoppingCart, LuTrash2 } from 'react-icons/lu'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/shared'
 import { useCartStore } from '../model/store'
@@ -8,9 +8,10 @@ import { useCartStore } from '../model/store'
 interface AddToCartButtonProps {
   product: Product
   className?: string
+  compact?: boolean
 }
 
-export function AddToCartButton({ product, className }: AddToCartButtonProps) {
+export function AddToCartButton({ product, className, compact = false }: AddToCartButtonProps) {
   const { add: addToCart, update: updateCart, remove: removeFromCart, items } = useCartStore()
 
   const cartItem = items.find(item => item.product_id === product.id)
@@ -30,16 +31,14 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
   }
 
   const handleIncrement = () => {
-    if (!cartItem) {
+    if (!cartItem)
       return
-    }
     updateCart(product.id, cartItem.quantity + 1)
   }
 
   const handleDecrement = () => {
-    if (!cartItem) {
+    if (!cartItem)
       return
-    }
     if (cartItem.quantity <= 1) {
       removeFromCart(product.id)
     }
@@ -48,6 +47,66 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
     }
   }
 
+  const DecrementIcon = cartItem && cartItem.quantity <= 1
+    ? <LuTrash2 className="size-4" />
+    : <LuMinus className="size-4" strokeWidth={1.5} />
+
+  // Compact mode — used inside ProductCard on listing pages
+  if (compact) {
+    if (!inCart) {
+      return (
+        <Button
+          className={cn('h-8 w-full text-xs', className)}
+          size="sm"
+          onClick={handleAddToCart}
+          disabled={isOutOfStock}
+        >
+          {isOutOfStock
+            ? 'Нет в наличии'
+            : (
+                <>
+                  <LuPlus className="size-3.5" />
+                  В корзину
+                </>
+              )}
+        </Button>
+      )
+    }
+
+    return (
+      <div
+        className={cn(
+          'flex h-8 w-full items-center justify-between rounded-md bg-secondary px-1 text-secondary-foreground',
+          className,
+        )}
+      >
+        <Button
+          size="icon"
+          className="size-6"
+          variant="ghost"
+          onClick={handleDecrement}
+        >
+          {DecrementIcon}
+        </Button>
+        <span className="text-xs font-medium">
+          {cartItem.quantity}
+          {' '}
+          шт.
+        </span>
+        <Button
+          size="icon"
+          className="size-6"
+          variant="ghost"
+          onClick={handleIncrement}
+          disabled={isOutOfStock || cartItem.quantity >= product.stock_quantity}
+        >
+          <LuPlus className="size-4" strokeWidth={1.5} />
+        </Button>
+      </div>
+    )
+  }
+
+  // Default (full) mode — used on product detail page
   if (!inCart) {
     return (
       <Button
@@ -61,7 +120,7 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
   }
 
   return (
-    <div className={cn(`grid h-10 grid-cols-2 gap-2`, className)}>
+    <div className={cn('grid h-10 grid-cols-2 gap-2', className)}>
       <div className="h-full">
         <Button className="size-full!" asChild>
           <Link to="/cart">
@@ -70,25 +129,18 @@ export function AddToCartButton({ product, className }: AddToCartButtonProps) {
           </Link>
         </Button>
       </div>
-      <div className="
-        flex size-full items-center justify-between rounded-md bg-secondary p-1
-        text-secondary-foreground
-      "
-      >
+      <div className="flex size-full items-center justify-between rounded-md bg-secondary p-1 text-secondary-foreground">
         <Button
           size="icon"
           className="size-8"
           variant="ghost"
           onClick={handleDecrement}
         >
-          <LuMinus className="size-5" strokeWidth={1.5} />
+          {DecrementIcon}
         </Button>
-        <div className="
-          flex flex-col items-center justify-center text-center text-sm
-        "
-        >
-          <p className="leading-tight font-medium">
-            {cartItem?.quantity}
+        <div className="flex flex-col items-center justify-center text-center text-sm">
+          <p className="font-medium leading-tight">
+            {cartItem.quantity}
             {' '}
             шт.
           </p>

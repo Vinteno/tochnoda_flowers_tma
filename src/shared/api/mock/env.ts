@@ -33,19 +33,19 @@ if (import.meta.env.DEV) {
     // eslint-disable-next-line antfu/no-top-level-await
     if (!await isTMA('complete')) {
       const themeParams = {
-        accent_text_color: '#52a93d',
+        accent_text_color: '#c73b28',
         bg_color: '#ffffff',
-        button_color: '#52a93d',
+        button_color: '#c73b28',
         button_text_color: '#ffffff',
         destructive_text_color: '#e61919',
-        header_bg_color: '#e6f2d9',
-        hint_color: '#6a707c',
-        link_color: '#52a93d',
-        secondary_bg_color: '#e6f2d9',
+        header_bg_color: '#f5e8e5',
+        hint_color: '#7d5c58',
+        link_color: '#c73b28',
+        secondary_bg_color: '#f5e8e5',
         section_bg_color: '#ffffff',
-        section_header_text_color: '#6a707c',
-        subtitle_text_color: '#6a707c',
-        text_color: '#22252a',
+        section_header_text_color: '#7d5c58',
+        subtitle_text_color: '#7d5c58',
+        text_color: '#1c1c1c',
       } as const
       const noInsets = { left: 0, top: 0, bottom: 0, right: 0 } as const
 
